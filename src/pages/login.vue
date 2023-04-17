@@ -29,7 +29,8 @@
 <script setup>
 import { ref } from 'vue';
 import { telegramLoginTemp } from 'vue3-telegram-login';
-
+const route = useRoute()
+const router = useRouter()
 const isLoaded = ref(false)
 
 function telegramLoadedCallbackFunc () {

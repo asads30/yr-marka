@@ -15,8 +15,6 @@ export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
-
-    // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
     vuetify({
       styles: {
         configFile: 'src/styles/variables/_vuetify.scss',
@@ -24,10 +22,7 @@ export default defineConfig({
     }),
     Pages({
       dirs: ['./src/pages'],
-
-      // ℹ️ We need three routes using single routes so we will ignore generating route for this SFC file
       onRoutesGenerated: routes => [
-        // Email filter
         {
           path: '/apps/email/:filter',
           name: 'apps-email-filter',
@@ -37,8 +32,6 @@ export default defineConfig({
             layoutWrapperClasses: 'layout-content-height-fixed',
           },
         },
-
-        // Email label
         {
           path: '/apps/email/label/:label',
           name: 'apps-email-label',
@@ -57,7 +50,7 @@ export default defineConfig({
     }),
     Components({
       dirs: ['src/@core/components', 'src/views/demos'],
-      dts: true,
+      dts: false,
     }),
     AutoImport({
       eslintrc: {

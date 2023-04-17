@@ -13,7 +13,7 @@
           :max-width="500"
           class="mt-12 mt-sm-0 pa-4"
         >
-          <span v-if="!isLoaded">Loading...</span>
+          <span v-if="!isLoaded">Загрузка...</span>
           <telegram-login-temp
             mode="callback"
             telegram-login="tgauthtestuzbot"
@@ -33,20 +33,26 @@ import { telegramLoginTemp } from 'vue3-telegram-login';
 const isLoaded = ref(false)
 
 function telegramLoadedCallbackFunc () {
-  console.log('script is loaded')
   isLoaded.value = true
 }
 
 function yourCallbackFunction (user) {
-  // gets user as an input
-  // id, first_name, last_name, username,
-  // photo_url, auth_date and hash
-  console.log(user)
+  try {
+    if(user){
+      const ability = [{action: 'manage', subject: 'all'}];
+      localStorage.setItem('userData', JSON.stringify(user));
+      localStorage.setItem('userAbilities', JSON.stringify(ability));
+      localStorage.setItem('accessToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MX0.fhc3wykrAnRpcKApKhXiahxaOe8PSHatad31NuIZ0Zg')
+    }
+  } catch (error) {
+    console.log(error)
+  }
+  router.replace(route.query.to ? String(route.query.to) : '/')
 }
 </script>
 
 <style lang="scss">
-@use "@core/scss/template/pages/page-auth.scss";
+  @use "@core/scss/template/pages/page-auth.scss";
 </style>
 
 <route lang="yaml">

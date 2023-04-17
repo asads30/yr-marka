@@ -194,8 +194,6 @@ const addRemoveIndividualCheckbox = checkID => {
 
 const addNewUser = userData => {
   userListStore.addUser(userData)
-
-  // refetch User
   fetchUsers()
 }
 </script>

@@ -1,6 +1,6 @@
 export default [
   {
-    title: 'Панель',
+    title: 'Dashboard',
     icon: { icon: 'mdi-home-outline' },
     to: 'dashboards-ecommerce',
   },

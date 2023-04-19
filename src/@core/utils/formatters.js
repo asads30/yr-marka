@@ -26,7 +26,7 @@ export const formatDate = (value, formatting = { month: 'short', day: 'numeric',
   if (!value)
     return value
   
-  return new Intl.DateTimeFormat('en-US', formatting).format(new Date(value))
+  return new Intl.DateTimeFormat('ru-RU', formatting).format(new Date(value))
 }
 
 /**

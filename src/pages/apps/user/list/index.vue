@@ -11,7 +11,6 @@ const totalPage = ref(1)
 const totalUsers = ref(0)
 const users = ref([])
 
-// 👉 Fetching users
 const fetchUsers = () => {
   userListStore.fetchUsers({
     pageSize: rowPerPage.value,
@@ -46,42 +45,18 @@ const paginationData = computed(() => {
   const firstIndex = users.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
   const lastIndex = users.value.length + (currentPage.value - 1) * rowPerPage.value
   
-  return `${ firstIndex }-${ lastIndex } of ${ totalUsers.value }`
+  return `${ firstIndex }-${ lastIndex } из ${ totalUsers.value }`
 })
 
 // SECTION Checkbox toggle
 const selectedRows = ref([])
 const selectAllUser = ref(false)
 
-// 👉 add/remove all checkbox ids in array
-const selectUnselectAll = () => {
-  selectAllUser.value = !selectAllUser.value
-  if (selectAllUser.value) {
-    users.value.forEach(user => {
-      if (!selectedRows.value.includes(`check${ user.id }`))
-        selectedRows.value.push(`check${ user.id }`)
-    })
-  } else {
-    selectedRows.value = []
-  }
-}
-
 // 👉 watch if checkbox array is empty all select should be uncheck
 watch(selectedRows, () => {
   if (!selectedRows.value.length)
     selectAllUser.value = false
 }, { deep: true })
-
-const addRemoveIndividualCheckbox = checkID => {
-  if (selectedRows.value.includes(checkID)) {
-    const index = selectedRows.value.indexOf(checkID)
-
-    selectedRows.value.splice(index, 1)
-  } else {
-    selectedRows.value.push(checkID)
-    selectAllUser.value = true
-  }
-}
 
 const addNewUser = userData => {
   userListStore.addUser(userData)
@@ -93,28 +68,6 @@ const addNewUser = userData => {
   <section>
 
     <VCard>
-      <VCardText class="d-flex flex-wrap gap-4">
-        <VBtn
-          variant="tonal"
-          color="secondary"
-          prepend-icon="mdi-tray-arrow-up"
-        >
-          Экспорт
-        </VBtn>
-        <VSpacer />
-        <div class="app-user-search-filter d-flex align-center">
-          <VTextField
-            v-model="searchQuery"
-            placeholder="Поиск по юзерам"
-            density="compact"
-            class="me-3"
-          />
-          <VBtn @click="isAddNewUserDrawerVisible = true">
-            Добавить
-          </VBtn>
-        </div>
-      </VCardText>
-      <VDivider />
       <VTable class="text-no-wrap">
         <thead>
           <tr>

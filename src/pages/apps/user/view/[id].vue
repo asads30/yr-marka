@@ -8,6 +8,8 @@ const userListStore = useUserListStore()
 const route = useRoute()
 const userData = ref()
 const userTab = ref(null)
+const channels = ref([])
+const payments = ref([])
 
 const tabs = [
   {
@@ -20,8 +22,15 @@ const tabs = [
   },
 ]
 
-userListStore.fetchUser(Number(route.params.id)).then(response => {
+userListStore.fetchUserById(Number(route.params.id)).then(response => {
   userData.value = response.data
+})
+userListStore.fetchUserChannelsById(Number(route.params.id)).then(response => {
+  channels.value = response.data
+})
+userListStore.fetchUserPaymentsById(Number(route.params.id)).then(response => {
+  payments.value = response.data.payments
+  console.log(response.data)
 })
 </script>
 
@@ -32,7 +41,7 @@ userListStore.fetchUser(Number(route.params.id)).then(response => {
       md="5"
       lg="4"
     >
-      <UserBioPanel :user-data="userData" />
+      <UserBioPanel :user-data="userData" :channels="channels" />
     </VCol>
 
     <VCol
@@ -63,7 +72,7 @@ userListStore.fetchUser(Number(route.params.id)).then(response => {
         :touch="false"
       >
         <VWindowItem>
-          <UserTabOverview />
+          <UserTabOverview :payments="payments" />
         </VWindowItem>
 
         <VWindowItem>

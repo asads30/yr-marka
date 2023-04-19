@@ -14,6 +14,26 @@ export const useUserListStore = defineStore('UserListStore', {
           .catch(error => reject(error))
       })
     },
+    fetchUserById(id) {
+      return new Promise((resolve, reject) => {
+        axiosIns.get(`/user/getUserById/?userId=${id}`).then(response => resolve(response)).catch(error => reject(error))
+      })
+    },
+    fetchUserChannelsById(id) {
+      return new Promise((resolve, reject) => {
+        axiosIns.get(`/channel/getChannelsByUserId/?userId=${id}`).then(response => resolve(response)).catch(error => reject(error))
+      })
+    },
+    fetchUserProductsByChannelId(id) {
+      return new Promise((resolve, reject) => {
+        axiosIns.get(`/product/getProductByChannelId/?channelId=${id}`).then(response => resolve(response)).catch(error => reject(error))
+      })
+    },
+    fetchUserPaymentsById(id) {
+      return new Promise((resolve, reject) => {
+        axiosIns.get(`/payment/?page=1&pageSize=5`).then(response => resolve(response)).catch(error => reject(error))
+      })
+    },
     fetchUser(id) {
       return new Promise((resolve, reject) => {
         axiosIns.get(`/apps/users/${id}`).then(response => resolve(response)).catch(error => reject(error))

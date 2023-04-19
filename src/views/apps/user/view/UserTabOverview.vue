@@ -1,7 +1,5 @@
 <script setup>
-import UserInvoiceTable from './UserInvoiceTable.vue'
 
-// Images
 import figma from '@images/icons/project-icons/figma.png'
 import html5 from '@images/icons/project-icons/html5.png'
 import python from '@images/icons/project-icons/python.png'
@@ -9,6 +7,13 @@ import react from '@images/icons/project-icons/react.png'
 import sketch from '@images/icons/project-icons/sketch.png'
 import vue from '@images/icons/project-icons/vue.png'
 import xamarin from '@images/icons/project-icons/xamarin.png'
+
+const props = defineProps({
+  payments: {
+    type: Object,
+    required: true,
+  }
+})
 
 const projects = [
   {
@@ -145,9 +150,103 @@ const resolveUserProgressVariant = progress => {
         </VTable>
       </VCard>
     </VCol>
-
     <VCol cols="12">
-      <UserInvoiceTable />
+      <VCard
+        v-if="props.payments.length > 0"
+        id="invoice-list"
+        title="Платежи"
+      >
+        <VTable class="text-no-wrap invoice-list-table">
+          <thead>
+            <tr>
+              <th scope="col">
+                ID
+              </th>
+              <th scope="col" class="text-center">
+                СУММА
+              </th>
+              <th scope="col" class="text-center">
+                ПОКУПАТЕЛЬ
+              </th>
+              <th scope="col" class="text-center">
+                ПРОДАВЕЦ
+              </th>
+              <th scope="col" class="text-center">
+                ТОВАР
+              </th>
+              <th scope="col" class="text-center">
+                ДЕЙСТВИЯ
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="payment in props.payments"
+              :key="payment.id"
+            >
+              <td>
+                <RouterLink
+                  :to="{ name: 'apps-user-view-id', params: { id: payment.id } }"
+                >
+                  #{{ payment.id }}
+                </RouterLink>
+              </td>
+              <td class="text-center">
+                {{ payment.price }} ₽
+              </td>
+              <td class="text-center">
+                {{ payment.name }}
+              </td>
+              <td class="text-center">
+                {{ payment.user_id }}
+              </td>
+              <td class="text-center">
+                {{ payment.product_id }}
+              </td>
+              <td
+                class="text-center"
+                style="width: 5rem;"
+              >
+                <VBtn
+                  size="x-small"
+                  color="default"
+                  variant="plain"
+                  icon
+                >
+                  <VIcon
+                    size="24"
+                    icon="mdi-dots-vertical"
+                  />
+                  <VMenu activator="parent">
+                    <VList>
+                      <VListItem :to="{ name: 'apps-user-view-id', params: { id: payment.id } }">
+                        <template #prepend>
+                          <VIcon
+                            icon="mdi-eye-outline"
+                            :size="20"
+                            class="me-3"
+                          />
+                        </template>
+                        <VListItemTitle>Посмотреть</VListItemTitle>
+                      </VListItem>
+                      <VListItem href="javascript:void(0)">
+                        <template #prepend>
+                          <VIcon
+                            icon="mdi-delete-outline"
+                            :size="20"
+                            class="me-3"
+                          />
+                        </template>
+                        <VListItemTitle>Блокировать</VListItemTitle>
+                      </VListItem>
+                    </VList>
+                  </VMenu>
+                </VBtn>
+              </td>
+            </tr>
+          </tbody>
+        </VTable>
+      </VCard>
     </VCol>
   </VRow>
 </template>

@@ -1,14 +1,14 @@
-import axios from '@axios'
+import axiosIns from '@axios'
 import { defineStore } from 'pinia'
 
 export const useUserListStore = defineStore('UserListStore', {
   actions: {
     fetchUsers(params) { 
-      return axios.get('/apps/users/list', { params })
+      return axiosIns.get('/user/', {params})
     },
     addUser(userData) {
       return new Promise((resolve, reject) => {
-        axios.post('/apps/users/user', {
+        axiosIns.post('/apps/users/user', {
           user: userData,
         }).then(response => resolve(response))
           .catch(error => reject(error))
@@ -16,7 +16,7 @@ export const useUserListStore = defineStore('UserListStore', {
     },
     fetchUser(id) {
       return new Promise((resolve, reject) => {
-        axios.get(`/apps/users/${id}`).then(response => resolve(response)).catch(error => reject(error))
+        axiosIns.get(`/apps/users/${id}`).then(response => resolve(response)).catch(error => reject(error))
       })
     },
   },

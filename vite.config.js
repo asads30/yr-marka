@@ -12,6 +12,11 @@ import vuetify from 'vite-plugin-vuetify'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    proxy: {
+      '/admin': 'https://wpaka.site/',
+    }
+  },
   plugins: [
     vue(),
     vueJsx(),

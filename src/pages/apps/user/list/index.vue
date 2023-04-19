@@ -5,9 +5,6 @@ import { avatarText } from '@core/utils/formatters';
 
 const userListStore = useUserListStore()
 const searchQuery = ref('')
-const selectedRole = ref()
-const selectedPlan = ref()
-const selectedStatus = ref()
 const rowPerPage = ref(50)
 const currentPage = ref(1)
 const totalPage = ref(1)
@@ -17,16 +14,12 @@ const users = ref([])
 // 👉 Fetching users
 const fetchUsers = () => {
   userListStore.fetchUsers({
-    q: searchQuery.value,
-    status: selectedStatus.value,
-    plan: selectedPlan.value,
-    role: selectedRole.value,
-    perPage: rowPerPage.value,
-    currentPage: currentPage.value,
+    pageSize: rowPerPage.value,
+    page: currentPage.value
   }).then(response => {
     users.value = response.data.users
-    totalPage.value = response.data.totalPage
-    totalUsers.value = response.data.totalUsers
+    totalPage.value = response.data.totalPageCount
+    totalUsers.value = response.data.totalUserCount
   }).catch(error => {
     console.error(error)
   })
@@ -39,108 +32,6 @@ watchEffect(() => {
   if (currentPage.value > totalPage.value)
     currentPage.value = totalPage.value
 })
-
-// 👉 search filters
-const roles = [
-  {
-    title: 'Admin',
-    value: 'admin',
-  },
-  {
-    title: 'Author',
-    value: 'author',
-  },
-  {
-    title: 'Editor',
-    value: 'editor',
-  },
-  {
-    title: 'Maintainer',
-    value: 'maintainer',
-  },
-  {
-    title: 'Subscriber',
-    value: 'subscriber',
-  },
-]
-
-const plans = [
-  {
-    title: 'Basic',
-    value: 'basic',
-  },
-  {
-    title: 'Company',
-    value: 'company',
-  },
-  {
-    title: 'Enterprise',
-    value: 'enterprise',
-  },
-  {
-    title: 'Team',
-    value: 'team',
-  },
-]
-
-const status = [
-  {
-    title: 'Pending',
-    value: 'pending',
-  },
-  {
-    title: 'Active',
-    value: 'active',
-  },
-  {
-    title: 'Inactive',
-    value: 'inactive',
-  },
-]
-
-const resolveUserRoleVariant = role => {
-  if (role === 'subscriber')
-    return {
-      color: 'primary',
-      icon: 'mdi-account-outline',
-    }
-  if (role === 'author')
-    return {
-      color: 'warning',
-      icon: 'mdi-cog-outline',
-    }
-  if (role === 'maintainer')
-    return {
-      color: 'success',
-      icon: 'mdi-chart-donut',
-    }
-  if (role === 'editor')
-    return {
-      color: 'info',
-      icon: 'mdi-pencil-outline',
-    }
-  if (role === 'admin')
-    return {
-      color: 'error',
-      icon: 'mdi-laptop',
-    }
-  
-  return {
-    color: 'primary',
-    icon: 'mdi-account-outline',
-  }
-}
-
-const resolveUserStatusVariant = stat => {
-  if (stat === 'pending')
-    return 'warning'
-  if (stat === 'active')
-    return 'success'
-  if (stat === 'inactive')
-    return 'secondary'
-  
-  return 'primary'
-}
 
 const isAddNewUserDrawerVisible = ref(false)
 
@@ -200,60 +91,9 @@ const addNewUser = userData => {
 
 <template>
   <section>
-    <VCard
-      title="Фильтры"
-      class="mb-6"
-    >
-      <VCardText>
-        <VRow>
-          <!-- 👉 Select Role -->
-          <VCol
-            cols="12"
-            sm="4"
-          >
-            <VSelect
-              v-model="selectedRole"
-              label="Выберите роль"
-              :items="roles"
-              clearable
-              clear-icon="mdi-close"
-            />
-          </VCol>
-
-          <!-- 👉 Select Status -->
-          <VCol
-            cols="12"
-            sm="4"
-          >
-            <VSelect
-              v-model="selectedStatus"
-              label="Выберите статус"
-              :items="status"
-              clearable
-              clear-icon="mdi-close"
-            />
-          </VCol>
-
-          <!-- 👉 Select Plan -->
-          <VCol
-            cols="12"
-            sm="4"
-          >
-            <VSelect
-              v-model="selectedPlan"
-              label="Сортировать по"
-              :items="plans"
-              clearable
-              clear-icon="mdi-close"
-            />
-          </VCol>
-        </VRow>
-      </VCardText>
-    </VCard>
 
     <VCard>
       <VCardText class="d-flex flex-wrap gap-4">
-        <!-- 👉 Export button -->
         <VBtn
           variant="tonal"
           color="secondary"
@@ -261,98 +101,61 @@ const addNewUser = userData => {
         >
           Экспорт
         </VBtn>
-
         <VSpacer />
-
         <div class="app-user-search-filter d-flex align-center">
-          <!-- 👉 Search  -->
           <VTextField
             v-model="searchQuery"
             placeholder="Поиск по юзерам"
             density="compact"
             class="me-3"
           />
-
-          <!-- 👉 Add user button -->
           <VBtn @click="isAddNewUserDrawerVisible = true">
             Добавить
           </VBtn>
         </div>
       </VCardText>
-
       <VDivider />
-
       <VTable class="text-no-wrap">
-        <!-- 👉 table head -->
         <thead>
           <tr>
             <th scope="col">
-              <div style="width: 1.875rem;">
-                <VCheckbox
-                  :model-value="selectAllUser"
-                  :indeterminate="(users.length !== selectedRows.length) && !!selectedRows.length"
-                  @click="selectUnselectAll"
-                />
-              </div>
-            </th>
-            <th scope="col">
               ЮЗЕР
             </th>
-            <th scope="col">
+            <th scope="col" class="text-center">
               РОЛЬ
             </th>
-            <th scope="col">
+            <th scope="col" class="text-center">
               БАЛАНС
             </th>
-            <th scope="col">
+            <th scope="col" class="text-center">
               СТАТУС
             </th>
-            <th scope="col">
+            <th scope="col" class="text-center">
               ДЕЙСТВИЯ
             </th>
           </tr>
         </thead>
-
-        <!-- 👉 table body -->
         <tbody>
           <tr
             v-for="user in users"
             :key="user.id"
           >
-            <!-- 👉 Checkbox -->
-            <td>
-              <div style="width: 1.875rem;">
-                <VCheckbox
-                  :id="`check${user.id}`"
-                  :model-value="selectedRows.includes(`check${user.id}`)"
-                  @click="addRemoveIndividualCheckbox(`check${user.id}`)"
-                />
-              </div>
-            </td>
-
-            <!-- 👉 User -->
             <td>
               <div class="d-flex align-center">
                 <VAvatar
                   variant="tonal"
-                  :color="resolveUserRoleVariant(user.role).color"
                   class="me-3"
                   size="34"
                 >
-                  <VImg
-                    v-if="user.avatar"
-                    :src="user.avatar"
-                  />
-                  <span v-else>{{ avatarText(user.fullName) }}</span>
+                  <span>{{ avatarText(user.first_name + ' ' + user.last_name) }}</span>
                 </VAvatar>
-
                 <div class="d-flex flex-column">
                   <h6 class="text-sm font-weight-medium">
                     <RouterLink
                       :to="{ name: 'apps-user-view-id', params: { id: user.id } }"
                       class="font-weight-medium user-list-name"
                     >
-                      {{ user.fullName }}
+                      {{ user.first_name + ' ' + user.last_name }}
                     </RouterLink>
                   </h6>
                   <a
@@ -363,35 +166,33 @@ const addNewUser = userData => {
                 </div>
               </div>
             </td>
-
-            <!-- 👉 Role -->
-            <td>
+            <td class="text-center">
               <VIcon
-                :icon="resolveUserRoleVariant(user.role).icon"
-                :color="resolveUserRoleVariant(user.role).color"
+                icon="mdi-user"
+                color="info"
                 :size="22"
                 class="me-3"
+                v-if="user.role_id == 1"
               />
-              <span class="text-capitalize text-medium-emphasis">{{ user.role }}</span>
+              <span class="text-capitalize text-medium-emphasis">Автор</span>
             </td>
-
-            <!-- 👉 Plan -->
-            <td class="text-capitalize">
-              100 ₽
+            <td class="text-capitalize text-center">
+              {{ user.balance }} ₽
             </td>
-
-            <!-- 👉 Status -->
-            <td>
+            <td class="text-center">
               <VChip
-                :color="resolveUserStatusVariant(user.status)"
+                color="success"
                 size="small"
                 class="text-capitalize"
-              >
-                {{ user.status }}
-              </VChip>
+                v-if="user.status == 1"
+              >Активный</VChip>
+              <VChip
+                color="error"
+                size="small"
+                class="text-capitalize"
+                v-else
+              >Заблокирован</VChip>
             </td>
-
-            <!-- 👉 Actions -->
             <td
               class="text-center"
               style="width: 5rem;"
@@ -406,7 +207,6 @@ const addNewUser = userData => {
                   size="24"
                   icon="mdi-dots-vertical"
                 />
-
                 <VMenu activator="parent">
                   <VList>
                     <VListItem :to="{ name: 'apps-user-view-id', params: { id: user.id } }">
@@ -417,10 +217,8 @@ const addNewUser = userData => {
                           class="me-3"
                         />
                       </template>
-
                       <VListItemTitle>Посмотреть</VListItemTitle>
                     </VListItem>
-
                     <VListItem href="javascript:void(0)">
                       <template #prepend>
                         <VIcon
@@ -429,7 +227,6 @@ const addNewUser = userData => {
                           class="me-3"
                         />
                       </template>
-
                       <VListItemTitle>Блокировать</VListItemTitle>
                     </VListItem>
                   </VList>
@@ -438,8 +235,6 @@ const addNewUser = userData => {
             </td>
           </tr>
         </tbody>
-
-        <!-- 👉 table footer  -->
         <tfoot v-show="!users.length">
           <tr>
             <td
@@ -451,16 +246,13 @@ const addNewUser = userData => {
           </tr>
         </tfoot>
       </VTable>
-
       <VDivider />
-
       <VCardText class="d-flex align-center flex-wrap justify-end gap-4 pa-2">
         <div
           class="d-flex align-center me-3"
           style="width: 171px;"
         >
-          <span class="text-no-wrap me-3">Rows per page:</span>
-
+          <span class="text-no-wrap me-3">Количество:</span>
           <VSelect
             v-model="rowPerPage"
             density="compact"
@@ -469,12 +261,10 @@ const addNewUser = userData => {
             :items="[50, 100, 200, 500]"
           />
         </div>
-
         <div class="d-flex align-center">
           <h6 class="text-sm font-weight-regular">
             {{ paginationData }}
           </h6>
-
           <VPagination
             v-model="currentPage"
             size="small"
@@ -486,8 +276,6 @@ const addNewUser = userData => {
         </div>
       </VCardText>
     </VCard>
-
-    <!-- 👉 Add New User -->
     <AddNewUserDrawer
       v-model:isDrawerOpen="isAddNewUserDrawerVisible"
       @user-data="addNewUser"
@@ -499,11 +287,9 @@ const addNewUser = userData => {
 .app-user-search-filter {
   inline-size: 24.0625rem;
 }
-
 .text-capitalize {
   text-transform: capitalize;
 }
-
 .user-list-name:not(:hover) {
   color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
 }

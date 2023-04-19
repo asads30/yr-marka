@@ -2,16 +2,16 @@
 import FlatPickr from 'vue-flatpickr-component'
 import { useTheme } from 'vuetify'
 import {
-  filterFieldProps,
-  makeVFieldProps,
+filterFieldProps,
+makeVFieldProps,
 } from 'vuetify/lib/components/VField/VField'
 import {
-  filterInputProps,
-  makeVInputProps,
+filterInputProps,
+makeVInputProps,
 } from 'vuetify/lib/components/VInput/VInput'
 
-import { filterInputAttrs } from 'vuetify/lib/util/helpers'
 import { useThemeConfig } from '@core/composable/useThemeConfig'
+import { filterInputAttrs } from 'vuetify/lib/util/helpers'
 
 const props = defineProps({
   ...makeVInputProps({
@@ -335,7 +335,6 @@ input[altinputclass="inlinePicker"] {
   opacity: 1 !important;
 }
 
-// week sections
 .flatpickr-weekdays {
   margin-block-start: 8px;
 }

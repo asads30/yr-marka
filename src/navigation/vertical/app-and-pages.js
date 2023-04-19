@@ -1,5 +1,5 @@
 export default [
-  { heading: 'Sections' },
+  { heading: 'Разделы' },
 
   // {
   //   title: 'Чат',

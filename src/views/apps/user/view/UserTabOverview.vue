@@ -86,7 +86,7 @@ const resolveUserProgressVariant = progress => {
 <template>
   <VRow>
     <VCol cols="12">
-      <VCard title="Посты">
+      <VCard title="Posts">
         <VDivider />
         <VTable class="text-no-wrap">
           <thead>

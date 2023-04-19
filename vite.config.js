@@ -14,7 +14,7 @@ import vuetify from 'vite-plugin-vuetify'
 export default defineConfig({
   server: {
     proxy: {
-      '/admin': 'https://wpaka.site/',
+      '/admin/': 'https://wpaka.site/',
     }
   },
   plugins: [

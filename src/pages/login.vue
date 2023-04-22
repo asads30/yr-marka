@@ -29,7 +29,6 @@
 <script setup>
 import { ref } from 'vue';
 import { telegramLoginTemp } from 'vue3-telegram-login';
-const route = useRoute()
 const router = useRouter()
 const isLoaded = ref(false)
 
@@ -48,8 +47,7 @@ function yourCallbackFunction (user) {
   } catch (error) {
     console.log(error)
   }
-  router.replace(route.query.to ? String(route.query.to) : '/')
-  console.log(user)
+  router.push('/')
 }
 </script>
 

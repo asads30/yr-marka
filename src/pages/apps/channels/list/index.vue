@@ -1,5 +1,6 @@
 <script setup>
 import { useChannelsListStore } from '@/views/apps/channels/useChannelsListStore';
+import axiosIns from '@axios';
 
 const channelsListStore = useChannelsListStore()
 const rowPerPage = ref(50)
@@ -7,6 +8,7 @@ const currentPage = ref(1)
 const totalPage = ref(1)
 const totalChannels = ref(0)
 const channels = ref([])
+const statusBan = ref(false)
 
 const fetchChannels = () => {
   channelsListStore.fetchChannels({
@@ -40,6 +42,19 @@ const paginationData = computed(() => {
 })
 
 const selectedRows = ref([])
+
+const banChannel = (id) => {
+  try {
+    axiosIns.post(`/channel/ban?channelId=${id}`).then(response => {
+      if(response.data.success == true){
+        fetchChannels()
+        statusBan.value = true
+      }
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
 </script>
 
 <template>
@@ -82,39 +97,16 @@ const selectedRows = ref([])
               style="width: 5rem;"
             >
               <VBtn
-                size="x-small"
+                variant="text"
                 color="default"
-                variant="plain"
                 icon
+                size="small"
+                @click="banChannel(channel.id)"
               >
                 <VIcon
                   size="24"
-                  icon="mdi-dots-vertical"
+                  icon="mdi-delete"
                 />
-                <VMenu activator="parent">
-                  <VList>
-                    <VListItem :to="{ name: 'apps-user-view-id', params: { id: channel.id } }">
-                      <template #prepend>
-                        <VIcon
-                          icon="mdi-eye-outline"
-                          :size="20"
-                          class="me-3"
-                        />
-                      </template>
-                      <VListItemTitle>Посмотреть</VListItemTitle>
-                    </VListItem>
-                    <VListItem href="javascript:void(0)">
-                      <template #prepend>
-                        <VIcon
-                          icon="mdi-delete-outline"
-                          :size="20"
-                          class="me-3"
-                        />
-                      </template>
-                      <VListItemTitle>Блокировать</VListItemTitle>
-                    </VListItem>
-                  </VList>
-                </VMenu>
               </VBtn>
             </td>
           </tr>
@@ -160,6 +152,12 @@ const selectedRows = ref([])
         </div>
       </VCardText>
     </VCard>
+    <VSnackbar
+      v-model="statusBan"
+      location="top end"
+    >
+      Канал удален
+    </VSnackbar>
   </section>
 </template>
 

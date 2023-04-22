@@ -9,18 +9,12 @@ export default [
   {
     title: 'Users',
     icon: { icon: 'mdi-account-outline' },
-    children: [
-      { title: 'List', to: 'apps-user-list' },
-      { title: 'View', to: { name: 'apps-user-view-id', params: { id: 21 } } },
-    ],
+    to: 'apps-user-list'
   },
   {
     title: 'Channels',
     icon: { icon: 'mdi-list-box' },
-    children: [
-      { title: 'List', to: 'apps-channels-list' },
-      { title: 'View', to: { name: 'apps-channels-view-id', params: { id: 21 } } },
-    ],
+    to: 'apps-channels-list'
   },
   {
     title: 'Posts',

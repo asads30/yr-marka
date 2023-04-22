@@ -1,10 +1,9 @@
 <script setup>
-import AddNewUserDrawer from '@/views/apps/user/list/AddNewUserDrawer.vue';
+import axiosIns from '@/plugins/axios';
 import { useUserListStore } from '@/views/apps/user/useUserListStore';
 import { avatarText } from '@core/utils/formatters';
 
 const userListStore = useUserListStore()
-const searchQuery = ref('')
 const rowPerPage = ref(50)
 const currentPage = ref(1)
 const totalPage = ref(1)
@@ -58,9 +57,9 @@ watch(selectedRows, () => {
     selectAllUser.value = false
 }, { deep: true })
 
-const addNewUser = userData => {
-  userListStore.addUser(userData)
-  fetchUsers()
+const blockUser = (username) => {
+  const block = axiosIns.post(`user/ban?userId&tgId&username=${username}`)
+  console.log(block)
 }
 </script>
 
@@ -172,7 +171,7 @@ const addNewUser = userData => {
                       </template>
                       <VListItemTitle>Посмотреть</VListItemTitle>
                     </VListItem>
-                    <VListItem href="javascript:void(0)">
+                    <VListItem @click="blockUser(user.username)">
                       <template #prepend>
                         <VIcon
                           icon="mdi-delete-outline"
@@ -229,10 +228,6 @@ const addNewUser = userData => {
         </div>
       </VCardText>
     </VCard>
-    <AddNewUserDrawer
-      v-model:isDrawerOpen="isAddNewUserDrawerVisible"
-      @user-data="addNewUser"
-    />
   </section>
 </template>
 

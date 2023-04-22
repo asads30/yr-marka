@@ -6,17 +6,20 @@ export const useUserListStore = defineStore('UserListStore', {
     fetchUsers(params) { 
       return axiosIns.get('user/', {params})
     },
+    blockUserById(id){
+      return axiosIns.post(`user/ban?userId=${id}`)
+    },
+    fetchUserById(id) {
+      return new Promise((resolve, reject) => {
+        axiosIns.get(`user/getUserById/?userId=${id}`).then(response => resolve(response)).catch(error => reject(error))
+      })
+    },
     addUser(userData) {
       return new Promise((resolve, reject) => {
         axiosIns.post('/apps/users/user', {
           user: userData,
         }).then(response => resolve(response))
           .catch(error => reject(error))
-      })
-    },
-    fetchUserById(id) {
-      return new Promise((resolve, reject) => {
-        axiosIns.get(`user/getUserById/?userId=${id}`).then(response => resolve(response)).catch(error => reject(error))
       })
     },
     fetchUserChannelsById(id) {

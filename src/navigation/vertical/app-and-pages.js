@@ -19,10 +19,7 @@ export default [
   {
     title: 'Posts',
     icon: { icon: 'mdi-post' },
-    children: [
-      { title: 'List', to: 'apps-posts-list' },
-      { title: 'View', to: { name: 'apps-posts-view-id', params: { id: 21 } } },
-    ],
+    to: 'apps-posts-list'
   },
   {
     title: 'Payments',

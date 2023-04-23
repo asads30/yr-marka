@@ -67,7 +67,7 @@ const banChannel = (id) => {
             <th scope="col">
               Название
             </th>
-            <th scope="col" class="text-center">
+            <th scope="col">
               Автор
             </th>
             <th scope="col" class="text-center">
@@ -89,8 +89,13 @@ const banChannel = (id) => {
                 >{{ channel.address }}</a>
               </div>
             </td>
-            <td class="text-center">
-              {{ channel.user_id }}
+            <td>
+              <RouterLink
+                :to="{ name: 'apps-user-view-id', params: { id: channel.user_id } }"
+                class="font-weight-medium user-list-name"
+              >
+                Автор канала
+              </RouterLink>
             </td>
             <td
               class="text-center"

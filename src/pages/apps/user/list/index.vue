@@ -31,15 +31,12 @@ watchEffect(() => {
     currentPage.value = totalPage.value
 })
 
-const isAddNewUserDrawerVisible = ref(false)
-
 // 👉 watching current page
 watchEffect(() => {
   if (currentPage.value > totalPage.value)
     currentPage.value = totalPage.value
 })
 
-// 👉 Computing pagination data
 const paginationData = computed(() => {
   const firstIndex = users.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
   const lastIndex = users.value.length + (currentPage.value - 1) * rowPerPage.value
@@ -47,11 +44,9 @@ const paginationData = computed(() => {
   return `${ firstIndex }-${ lastIndex } из ${ totalUsers.value }`
 })
 
-// SECTION Checkbox toggle
 const selectedRows = ref([])
 const selectAllUser = ref(false)
 
-// 👉 watch if checkbox array is empty all select should be uncheck
 watch(selectedRows, () => {
   if (!selectedRows.value.length)
     selectAllUser.value = false

@@ -74,19 +74,37 @@ const selectedRows = ref([])
             v-for="post in posts"
             :key="post.id"
           >
-            <td>
-              {{ post.name }}
+            <td class="post-list-name">
+              <RouterLink
+                :to="{ name: 'apps-posts-view-id', params: { id: post.id } }"
+                class="font-weight-medium user-list-name"
+              >
+                {{ post.name }}
+              </RouterLink>
             </td>
-            <td class="text-center">
+            <td class="text-center" style="width: 12rem;">
               {{ post.price }} ₽
             </td>
-            <td class="text-center">
-              {{ post.channel_id }}
+            <td class="text-center" style="width: 12rem;">
+              {{ post.comment_after_buy }}
             </td>
-            <td class="text-center">
-              {{ post.user_id }}
+            <td class="text-center" style="width: 12rem;">
+              <RouterLink
+                :to="{ name: 'apps-channels-view-id', params: { id: post.channel_id } }"
+                class="font-weight-medium user-list-name"
+              >
+                Канал товара
+              </RouterLink>
             </td>
-            <td class="text-center">
+            <td class="text-center" style="width: 12rem;">
+              <RouterLink
+                :to="{ name: 'apps-user-view-id', params: { id: post.user_id } }"
+                class="font-weight-medium user-list-name"
+              >
+                Автор товара
+              </RouterLink>
+            </td>
+            <td class="text-center" style="width: 12rem;">
               <VChip
                 color="success"
                 size="small"
@@ -105,39 +123,15 @@ const selectedRows = ref([])
               style="width: 5rem;"
             >
               <VBtn
-                size="x-small"
+                variant="text"
                 color="default"
-                variant="plain"
                 icon
+                size="small"
               >
                 <VIcon
                   size="24"
-                  icon="mdi-dots-vertical"
+                  icon="mdi-delete"
                 />
-                <VMenu activator="parent">
-                  <VList>
-                    <VListItem :to="{ name: 'apps-user-view-id', params: { id: post.id } }">
-                      <template #prepend>
-                        <VIcon
-                          icon="mdi-eye-outline"
-                          :size="20"
-                          class="me-3"
-                        />
-                      </template>
-                      <VListItemTitle>Посмотреть</VListItemTitle>
-                    </VListItem>
-                    <VListItem href="javascript:void(0)">
-                      <template #prepend>
-                        <VIcon
-                          icon="mdi-delete-outline"
-                          :size="20"
-                          class="me-3"
-                        />
-                      </template>
-                      <VListItemTitle>Блокировать</VListItemTitle>
-                    </VListItem>
-                  </VList>
-                </VMenu>
               </VBtn>
             </td>
           </tr>
@@ -195,6 +189,12 @@ const selectedRows = ref([])
 }
 .user-list-name:not(:hover) {
   color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
+}
+.post-list-name{
+  max-width: 400px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>
 

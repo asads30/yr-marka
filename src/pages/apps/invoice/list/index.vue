@@ -77,7 +77,7 @@ const selectedRows = ref([])
           >
             <td>
               <RouterLink
-                :to="{ name: 'apps-user-view-id', params: { id: invoice.id } }"
+                :to="{ name: 'apps-invoice-preview-id', params: { id: invoice.id } }"
               >
                 #{{ invoice.id }}
               </RouterLink>
@@ -89,49 +89,33 @@ const selectedRows = ref([])
               {{ invoice.name }}
             </td>
             <td class="text-center">
-              {{ invoice.user_id }}
+              <RouterLink
+                :to="{ name: 'apps-user-view-id', params: { id: invoice.user_id } }"
+              >
+                Автор канала
+              </RouterLink>
             </td>
             <td class="text-center">
-              {{ invoice.product_id }}
+              <RouterLink
+                :to="{ name: 'apps-posts-view-id', params: { id: invoice.product_id } }"
+              >
+                Товар платежа
+              </RouterLink>
             </td>
             <td
               class="text-center"
               style="width: 5rem;"
             >
               <VBtn
-                size="x-small"
+                variant="text"
                 color="default"
-                variant="plain"
                 icon
+                size="small"
               >
                 <VIcon
                   size="24"
-                  icon="mdi-dots-vertical"
+                  icon="mdi-delete"
                 />
-                <VMenu activator="parent">
-                  <VList>
-                    <VListItem :to="{ name: 'apps-user-view-id', params: { id: invoice.id } }">
-                      <template #prepend>
-                        <VIcon
-                          icon="mdi-eye-outline"
-                          :size="20"
-                          class="me-3"
-                        />
-                      </template>
-                      <VListItemTitle>Посмотреть</VListItemTitle>
-                    </VListItem>
-                    <VListItem href="javascript:void(0)">
-                      <template #prepend>
-                        <VIcon
-                          icon="mdi-delete-outline"
-                          :size="20"
-                          class="me-3"
-                        />
-                      </template>
-                      <VListItemTitle>Блокировать</VListItemTitle>
-                    </VListItem>
-                  </VList>
-                </VMenu>
               </VBtn>
             </td>
           </tr>

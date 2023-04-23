@@ -30,11 +30,6 @@ watchEffect(() => {
     currentPage.value = totalPage.value
 })
 
-watchEffect(() => {
-  if (currentPage.value > totalPage.value)
-    currentPage.value = totalPage.value
-})
-
 const paginationData = computed(() => {
   const firstIndex = channels.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
   const lastIndex = channels.value.length + (currentPage.value - 1) * rowPerPage.value
@@ -89,7 +84,7 @@ const banChannel = (id) => {
                 >{{ channel.address }}</a>
               </div>
             </td>
-            <td>
+            <td style="width: 15rem;">
               <RouterLink
                 :to="{ name: 'apps-user-view-id', params: { id: channel.user_id } }"
                 class="font-weight-medium user-list-name"

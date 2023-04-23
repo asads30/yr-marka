@@ -78,13 +78,18 @@ const selectedRows = ref([])
             <td>
               #{{ payout.id }}
             </td>
-            <td class="text-center">
-              {{ payout.user_id }}
+            <td class="text-center" style="width: 8rem;">
+              <RouterLink
+                :to="{ name: 'apps-user-view-id', params: { id: payout.user_id } }"
+                class="font-weight-medium user-list-name"
+              >
+                Автор канала
+              </RouterLink>
             </td>
-            <td class="text-center">
-              {{ payout.amount }}
+            <td class="text-center" style="width: 8rem;">
+              {{ payout.amount }} ₽
             </td>
-            <td class="text-center">
+            <td class="text-center" style="width: 8rem;">
               <VChip
                 color="success"
                 size="small"
@@ -98,7 +103,7 @@ const selectedRows = ref([])
                 v-else
               >Ожидает</VChip>
             </td>
-            <td class="text-center">
+            <td class="text-center" style="width: 8rem;">
               {{ formatDate(payout.createdAt, { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' }) }}
             </td>
             <td

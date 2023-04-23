@@ -113,7 +113,7 @@ const blockUser = (username) => {
                 </div>
               </div>
             </td>
-            <td class="text-center">
+            <td style="width: 8rem;" class="text-center">
               <VIcon
                 icon="mdi-user"
                 color="info"
@@ -123,10 +123,14 @@ const blockUser = (username) => {
               />
               <span class="text-capitalize text-medium-emphasis">Автор</span>
             </td>
-            <td class="text-capitalize text-center">
+            <td 
+              style="width: 8rem;"
+              class="text-capitalize text-center">
               {{ user.balance }} ₽
             </td>
-            <td class="text-center">
+            <td 
+              style="width: 8rem;"
+              class="text-center" >
               <VChip
                 color="success"
                 size="small"
@@ -145,39 +149,16 @@ const blockUser = (username) => {
               style="width: 5rem;"
             >
               <VBtn
-                size="x-small"
+                variant="text"
                 color="default"
-                variant="plain"
                 icon
+                size="small"
+                @click="blockUser(user.username)"
               >
                 <VIcon
                   size="24"
-                  icon="mdi-dots-vertical"
+                  icon="mdi-delete"
                 />
-                <VMenu activator="parent">
-                  <VList>
-                    <VListItem :to="{ name: 'apps-user-view-id', params: { id: user.id } }">
-                      <template #prepend>
-                        <VIcon
-                          icon="mdi-eye-outline"
-                          :size="20"
-                          class="me-3"
-                        />
-                      </template>
-                      <VListItemTitle>Посмотреть</VListItemTitle>
-                    </VListItem>
-                    <VListItem @click="blockUser(user.username)">
-                      <template #prepend>
-                        <VIcon
-                          icon="mdi-delete-outline"
-                          :size="20"
-                          class="me-3"
-                        />
-                      </template>
-                      <VListItemTitle>Блокировать</VListItemTitle>
-                    </VListItem>
-                  </VList>
-                </VMenu>
               </VBtn>
             </td>
           </tr>

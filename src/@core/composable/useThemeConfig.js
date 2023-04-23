@@ -1,6 +1,6 @@
-import { useTheme } from 'vuetify'
 import { useLayouts } from '@layouts'
 import { themeConfig } from '@themeConfig'
+import { useTheme } from 'vuetify'
 
 export const useThemeConfig = () => {
   const theme = computed({

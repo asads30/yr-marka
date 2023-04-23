@@ -1,11 +1,5 @@
 export default [
   { heading: 'Разделы' },
-
-  // {
-  //   title: 'Чат',
-  //   icon: { icon: 'mdi-message-outline' },
-  //   to: 'apps-chat',
-  // },
   {
     title: 'Users',
     icon: { icon: 'mdi-account-outline' },
@@ -24,11 +18,7 @@ export default [
   {
     title: 'Payments',
     icon: { icon: 'mdi-file-document-outline' },
-    children: [
-      { title: 'List', to: 'apps-invoice-list' },
-      { title: 'View', to: { name: 'apps-invoice-preview-id', params: { id: '5036' } } },
-      { title: 'Edit', to: { name: 'apps-invoice-edit-id', params: { id: '5036' } } },
-    ],
+    to: 'apps-invoice-list'
   },
   {
     title: 'Newsletter',

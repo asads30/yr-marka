@@ -10,12 +10,13 @@ const router = createRouter({
     {
       path: '/',
       redirect: to => {
-        const userData = JSON.parse(localStorage.getItem('userData') || '{}')
-        const userRole = userData && userData.role ? userData.role : null
+        const userData = JSON.parse(localStorage.getItem('userData'))
+        const user_role = JSON.parse(localStorage.getItem('userRole'))
+        const userRole = userData && user_role
         if (userRole === 'admin')
           return { name: 'dashboards-ecommerce' }
-        
-        return { name: 'login', query: to.query }
+        else
+          return { name: 'login', query: to.query }
       },
     },
     {

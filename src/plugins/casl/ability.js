@@ -5,6 +5,10 @@ export const initialAbility = [
     action: 'read',
     subject: 'Auth',
   },
+  {
+    action: 'manage',
+    subject: 'all',
+  }
 ]
 
 //  Read ability from localStorage

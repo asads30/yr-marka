@@ -4,7 +4,7 @@ const axiosIns = axios.create({
     baseURL: '/admin/',
     timeout: 5000,
     headers: { 
-        'Authorization': JSON.parse(localStorage.getItem('userData'))
+        'Authorization': localStorage.getItem('userData')
     }
 })
 

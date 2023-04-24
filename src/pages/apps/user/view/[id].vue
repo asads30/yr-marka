@@ -10,6 +10,7 @@ const userData = ref()
 const userTab = ref(null)
 const channels = ref([])
 const payments = ref([])
+const products = ref([])
 
 const tabs = [
   {
@@ -30,7 +31,9 @@ userListStore.fetchUserChannelsById(Number(route.params.id)).then(response => {
 })
 userListStore.fetchUserPaymentsById(Number(route.params.id)).then(response => {
   payments.value = response.data.payments
-  console.log(response.data)
+})
+userListStore.fetchUserProductsById(Number(route.params.id)).then(response => {
+  products.value = response.data.products
 })
 </script>
 
@@ -72,7 +75,7 @@ userListStore.fetchUserPaymentsById(Number(route.params.id)).then(response => {
         :touch="false"
       >
         <VWindowItem>
-          <UserTabOverview :payments="payments" />
+          <UserTabOverview :payments="payments" :products="products" />
         </VWindowItem>
 
         <VWindowItem>

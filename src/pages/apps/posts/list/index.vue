@@ -86,9 +86,6 @@ const selectedRows = ref([])
               {{ post.price }} ₽
             </td>
             <td class="text-center" style="width: 12rem;">
-              {{ post.comment_after_buy }}
-            </td>
-            <td class="text-center" style="width: 12rem;">
               <RouterLink
                 :to="{ name: 'apps-channels-view-id', params: { id: post.channel_id } }"
                 class="font-weight-medium user-list-name"

@@ -24,17 +24,17 @@ export const useUserListStore = defineStore('UserListStore', {
     },
     fetchUserChannelsById(id) {
       return new Promise((resolve, reject) => {
-        axiosIns.get(`channel/getChannelsByUserId/?userId=${id}`).then(response => resolve(response)).catch(error => reject(error))
+        axiosIns.get(`channel/getChannelsByUserId/?userId=${id}&page=1&pageSize=50`).then(response => resolve(response)).catch(error => reject(error))
       })
     },
-    fetchUserProductsByChannelId(id) {
+    fetchUserProductsById(id) {
       return new Promise((resolve, reject) => {
-        axiosIns.get(`product/getProductByChannelId/?channelId=${id}`).then(response => resolve(response)).catch(error => reject(error))
+        axiosIns.get(`product/getProductByUserId/?userId=${id}&page=1&pageSize=50`).then(response => resolve(response)).catch(error => reject(error))
       })
     },
-    fetchUserPaymentsById() {
+    fetchUserPaymentsById(id) {
       return new Promise((resolve, reject) => {
-        axiosIns.get(`payment/?page=1&pageSize=5`).then(response => resolve(response)).catch(error => reject(error))
+        axiosIns.get(`payment/getPaymentByUserId?userId=${id}&page=1&pageSize=50`).then(response => resolve(response)).catch(error => reject(error))
       })
     },
     fetchUser(id) {

@@ -53,48 +53,13 @@ const isUpgradePlanDialogVisible = ref(false)
           </VChip>
         </VCardText>
 
-        <VCardText class="d-flex justify-center flex-wrap mt-3">
+        <VCardText class="d-flex flex-wrap mt-3">
           <div class="d-flex align-center me-8 mb-2">
-            <VAvatar
-              :size="44"
-              rounded
-              color="primary"
-              variant="tonal"
-              class="me-3"
-            >
-              <VIcon
-                size="22"
-                icon="mdi-cash"
-              />
-            </VAvatar>
-
             <div>
               <h6 class="text-h6">
                 {{ props.userData.balance }} ₽
               </h6>
               <span>Баланс</span>
-            </div>
-          </div>
-
-          <div class="d-flex align-center me-4 mb-2">
-            <VAvatar
-              :size="44"
-              rounded
-              color="primary"
-              variant="tonal"
-              class="me-3"
-            >
-              <VIcon
-                size="22"
-                icon="mdi-cash"
-              />
-            </VAvatar>
-
-            <div>
-              <h6 class="text-h6">
-                1 000 ₽
-              </h6>
-              <span>Выведено</span>
             </div>
           </div>
         </VCardText>
@@ -184,7 +149,7 @@ const isUpgradePlanDialogVisible = ref(false)
       </VCard>
     </VCol>
     
-    <VCol cols="12" v-if="channels">
+    <VCol cols="12" v-if="props.channels.length > 0">
       <VCard title="Каналы">
         <VDivider />
         <VTable class="text-no-wrap">

@@ -114,7 +114,7 @@ const selectedRows = ref([])
               >
                 <VIcon
                   size="24"
-                  icon="mdi-delete"
+                  icon="mdi-check"
                 />
               </VBtn>
             </td>

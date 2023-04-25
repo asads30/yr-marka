@@ -1,8 +1,7 @@
 <script setup>
 import { useInvoiceListStore } from '@/views/apps/invoice/useInvoiceListStore';
-
+import { formatDate } from '@core/utils/formatters';
 const invoiceListStore = useInvoiceListStore()
-const searchQuery = ref('')
 const rowPerPage = ref(50)
 const currentPage = ref(1)
 const totalPage = ref(1)
@@ -53,8 +52,11 @@ const selectedRows = ref([])
             <th scope="col">
               ID
             </th>
-            <th scope="col" class="text-center">
+            <th scope="col">
               СУММА
+            </th>
+            <th scope="col">
+              ДАТА ПЛАТЕЖА
             </th>
             <th scope="col" class="text-center">
               ПОКУПАТЕЛЬ
@@ -76,26 +78,25 @@ const selectedRows = ref([])
             :key="invoice.id"
           >
             <td>
-              <RouterLink
-                :to="{ name: 'apps-invoice-preview-id', params: { id: invoice.id } }"
-              >
-                #{{ invoice.id }}
-              </RouterLink>
+              №{{ invoice.id }}
             </td>
-            <td class="text-center">
+            <td style="width: 10rem;">
               {{ invoice.price }} ₽
             </td>
-            <td class="text-center">
+            <td style="width: 10rem;">
+              {{ formatDate(invoice.createdAt, { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' }) }}
+            </td>
+            <td class="text-center" style="width: 10rem;">
               {{ invoice.name }}
             </td>
-            <td class="text-center">
+            <td class="text-center" style="width: 10rem;">
               <RouterLink
                 :to="{ name: 'apps-user-view-id', params: { id: invoice.user_id } }"
               >
                 Автор канала
               </RouterLink>
             </td>
-            <td class="text-center">
+            <td class="text-center" style="width: 10rem;">
               <RouterLink
                 :to="{ name: 'apps-posts-view-id', params: { id: invoice.product_id } }"
               >

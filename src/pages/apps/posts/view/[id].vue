@@ -1,75 +1,46 @@
 <script setup>
-import { useUserListStore } from '@/views/apps/user/useUserListStore';
-import UserBioPanel from '@/views/apps/user/view/UserBioPanel.vue';
-import UserTabBillingsPlans from '@/views/apps/user/view/UserTabBillingsPlans.vue';
-import UserTabOverview from '@/views/apps/user/view/UserTabOverview.vue';
+import { usePostsListStore } from '@/views/apps/posts/usePostsListStore';
 
-const userListStore = useUserListStore()
+const postListStore = usePostsListStore()
 const route = useRoute()
-const userData = ref()
-const userTab = ref(null)
+const postData = ref()
 
-const tabs = [
-  {
-    icon: 'mdi-account-outline',
-    title: 'Информация',
-  },
-  {
-    icon: 'mdi-bookmark-outline',
-    title: 'Выплаты',
-  },
-]
-
-userListStore.fetchUser(Number(route.params.id)).then(response => {
-  userData.value = response.data
+postListStore.fetchPostById(Number(route.params.id)).then(response => {
+  postData.value = response.data
 })
 </script>
 
 <template>
-  <VRow v-if="userData">
+  <VRow v-if="postData">
     <VCol
       cols="12"
-      md="5"
-      lg="4"
     >
-      <UserBioPanel :user-data="userData" />
-    </VCol>
-
-    <VCol
-      cols="12"
-      md="7"
-      lg="8"
-    >
-      <VTabs
-        v-model="userTab"
-        class="v-tabs-pill"
-      >
-        <VTab
-          v-for="tab in tabs"
-          :key="tab.icon"
-        >
-          <VIcon
-            start
-            :size="24"
-            :icon="tab.icon"
-          />
-          <span>{{ tab.title }}</span>
-        </VTab>
-      </VTabs>
-
-      <VWindow
-        v-model="userTab"
-        class="mt-6 disable-tab-transition"
-        :touch="false"
-      >
-        <VWindowItem>
-          <UserTabOverview />
-        </VWindowItem>
-
-        <VWindowItem>
-          <UserTabBillingsPlans />
-        </VWindowItem>
-      </VWindow>
+      <VCard class="post-item">
+        <VCardText class="pt-10 pb-5">
+          <h1 class="post-title mb-5">{{ postData.name }}</h1>
+          <p class="post-des">{{ postData.description }}</p>
+          <p><strong>Цена:</strong> {{ postData.price }} рублей</p>
+          <div class="post-body" v-if="postData.comment_after_buy">
+            {{ postData.comment_after_buy }}
+          </div>
+          <div class="post-links mb-3">
+            <RouterLink
+              :to="{ name: 'apps-channels-view-id', params: { id: postData.channel_id } }"
+              class="font-weight-medium user-list-name"
+            >
+              Канал товара
+            </RouterLink>
+          </div>
+          <div class="post-links">
+            <RouterLink
+              :to="{ name: 'apps-user-view-id', params: { id: postData.user_id } }"
+              class="font-weight-medium user-list-name"
+            >
+              Автор товара
+            </RouterLink>
+          </div>
+        </VCardText>
+      </VCard>
     </VCol>
   </VRow>
 </template>

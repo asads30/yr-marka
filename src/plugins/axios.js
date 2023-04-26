@@ -5,7 +5,8 @@ const axiosIns = axios.create({
     timeout: 5000,
     headers: { 
         'Authorization': localStorage.getItem('userData')
-    }
+    },
+    responseType: 'json'
 })
 
 export default axiosIns

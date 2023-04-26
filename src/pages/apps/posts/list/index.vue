@@ -13,6 +13,7 @@ const fetchPosts = () => {
     pageSize: rowPerPage.value,
     page: currentPage.value
   }).then(response => {
+    console.log(response.headers)
     posts.value = response.data.products
     totalPage.value = response.data.totalPageCount
     totalPosts.value = response.data.totalProductCount

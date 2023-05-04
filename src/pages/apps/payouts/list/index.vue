@@ -65,9 +65,9 @@ const selectedRows = ref([])
             <th scope="col" class="text-center">
               ДАТА ЗАПРОСА
             </th>
-            <th scope="col" class="text-center">
+            <!-- <th scope="col" class="text-center">
               ДЕЙСТВИЯ
-            </th>
+            </th> -->
           </tr>
         </thead>
         <tbody>
@@ -106,7 +106,7 @@ const selectedRows = ref([])
             <td class="text-center" style="width: 8rem;">
               {{ formatDate(payout.createdAt, { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' }) }}
             </td>
-            <td
+            <!-- <td
               class="text-center"
               style="width: 5rem;"
             >
@@ -145,7 +145,7 @@ const selectedRows = ref([])
                   </VList>
                 </VMenu>
               </VBtn>
-            </td>
+            </td> -->
           </tr>
         </tbody>
         <tfoot v-show="!payouts.length">

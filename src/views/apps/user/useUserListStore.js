@@ -42,5 +42,10 @@ export const useUserListStore = defineStore('UserListStore', {
         axiosIns.get(`/apps/users/${id}`).then(response => resolve(response)).catch(error => reject(error))
       })
     },
+    fetchUserPayouts() {
+      return new Promise((resolve, reject) => {
+        axiosIns.get(`verifyRequest/?page=1&pageSize=50`).then(response => resolve(response)).catch(error => reject(error))
+      })
+    }
   },
 })

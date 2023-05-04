@@ -46,19 +46,6 @@ const isPositive = controlledComputed(() => props.change, () => Math.sign(props.
       </VAvatar>
 
       <VSpacer />
-
-      <VBtn
-        size="x-small"
-        variant="text"
-        color="default"
-        class="me-n3 mt-n1"
-        icon
-      >
-        <VIcon
-          size="24"
-          icon="mdi-dots-vertical"
-        />
-      </VBtn>
     </VCardText>
 
     <VCardText>

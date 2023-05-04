@@ -130,7 +130,7 @@ const isUpgradePlanDialogVisible = ref(false)
           </VList>
         </VCardText>
 
-        <VCardText class="d-flex justify-center">
+        <!-- <VCardText class="d-flex justify-center">
           <VBtn
             variant="tonal"
             color="error"
@@ -145,7 +145,7 @@ const isUpgradePlanDialogVisible = ref(false)
           >
             Разблокировать
           </VBtn>
-        </VCardText>
+        </VCardText> -->
       </VCard>
     </VCol>
     

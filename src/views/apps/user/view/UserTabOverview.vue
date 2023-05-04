@@ -36,9 +36,9 @@ const props = defineProps({
               <th scope="col" class="text-center">
                 Статус
               </th>
-              <th scope="col" class="text-center">
+              <!-- <th scope="col" class="text-center">
                 ДЕЙСТВИЯ
-              </th>
+              </th> -->
             </tr>
           </thead>
           <tbody>
@@ -87,7 +87,7 @@ const props = defineProps({
                   v-else
                 >Заблокирован</VChip>
               </td>
-              <td
+              <!-- <td
                 class="text-center"
                 style="width: 5rem;"
               >
@@ -102,7 +102,7 @@ const props = defineProps({
                     icon="mdi-delete"
                   />
                 </VBtn>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </VTable>
@@ -128,9 +128,9 @@ const props = defineProps({
               <th scope="col" class="text-center">
                 ТОВАР
               </th>
-              <th scope="col" class="text-center">
+              <!-- <th scope="col" class="text-center">
                 ДЕЙСТВИЯ
-              </th>
+              </th> -->
             </tr>
           </thead>
           <tbody>
@@ -139,11 +139,7 @@ const props = defineProps({
               :key="payment.id"
             >
               <td>
-                <RouterLink
-                  :to="{ name: 'apps-user-view-id', params: { id: payment.id } }"
-                >
-                  #{{ payment.id }}
-                </RouterLink>
+                #{{ payment.id }}
               </td>
               <td class="text-center">
                 {{ payment.price }} ₽
@@ -154,7 +150,7 @@ const props = defineProps({
               <td class="text-center">
                 {{ payment.product_id }}
               </td>
-              <td
+              <!-- <td
                 class="text-center"
                 style="width: 5rem;"
               >
@@ -169,7 +165,7 @@ const props = defineProps({
                     icon="mdi-check"
                   />
                 </VBtn>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </VTable>

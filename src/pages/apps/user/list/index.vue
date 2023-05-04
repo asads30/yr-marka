@@ -77,9 +77,9 @@ const blockUser = (username) => {
             <th scope="col" class="text-center">
               СТАТУС
             </th>
-            <th scope="col" class="text-center">
+            <!-- <th scope="col" class="text-center">
               ДЕЙСТВИЯ
-            </th>
+            </th> -->
           </tr>
         </thead>
         <tbody>
@@ -144,7 +144,7 @@ const blockUser = (username) => {
                 v-else
               >Заблокирован</VChip>
             </td>
-            <td
+            <!-- <td
               class="text-center"
               style="width: 5rem;"
             >
@@ -160,7 +160,7 @@ const blockUser = (username) => {
                   icon="mdi-delete"
                 />
               </VBtn>
-            </td>
+            </td> -->
           </tr>
         </tbody>
         <tfoot v-show="!users.length">

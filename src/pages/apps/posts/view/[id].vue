@@ -20,8 +20,8 @@ postListStore.fetchPostById(Number(route.params.id)).then(response => {
           <h1 class="post-title mb-5">{{ postData.name }}</h1>
           <p class="post-des">{{ postData.description }}</p>
           <p><strong>Цена:</strong> {{ postData.price }} рублей</p>
-          <div class="post-body" v-if="postData.comment_after_buy">
-            {{ postData.comment_after_buy }}
+          <div class="post-body mb-3" v-show="postData.comment_after_buy">
+            <strong>После оплаты: </strong>{{ postData.comment_after_buy }}
           </div>
           <div class="post-links mb-3">
             <RouterLink

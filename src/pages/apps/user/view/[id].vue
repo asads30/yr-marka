@@ -11,6 +11,7 @@ const userTab = ref(null)
 const channels = ref([])
 const payments = ref([])
 const products = ref([])
+const payouts = ref([])
 
 const tabs = [
   {
@@ -34,6 +35,9 @@ userListStore.fetchUserPaymentsById(Number(route.params.id)).then(response => {
 })
 userListStore.fetchUserProductsById(Number(route.params.id)).then(response => {
   products.value = response.data.products
+})
+userListStore.fetchUserPayouts().then(response => {
+  payouts.value = response.data.verifyRequests.find(item => item.user_id == route.params.id);
 })
 </script>
 
@@ -79,7 +83,7 @@ userListStore.fetchUserProductsById(Number(route.params.id)).then(response => {
         </VWindowItem>
 
         <VWindowItem>
-          <UserTabBillingsPlans />
+          <UserTabBillingsPlans :payouts="payouts" />
         </VWindowItem>
       </VWindow>
     </VCol>

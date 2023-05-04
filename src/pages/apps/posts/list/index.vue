@@ -65,9 +65,9 @@ const selectedRows = ref([])
             <th scope="col" class="text-center">
               Статус
             </th>
-            <th scope="col" class="text-center">
+            <!-- <th scope="col" class="text-center">
               ДЕЙСТВИЯ
-            </th>
+            </th> -->
           </tr>
         </thead>
         <tbody>
@@ -77,7 +77,7 @@ const selectedRows = ref([])
           >
             <td class="post-list-name">
               <RouterLink
-                :to="{ name: 'apps-posts-view-id', params: { id: post.id } }"
+                :to="{ name: 'apps-posts-view-id', params: { id: post.post_id } }"
                 class="font-weight-medium user-list-name"
               >
                 {{ post.name }}
@@ -116,7 +116,7 @@ const selectedRows = ref([])
                 v-else
               >Заблокирован</VChip>
             </td>
-            <td
+            <!-- <td
               class="text-center"
               style="width: 5rem;"
             >
@@ -131,7 +131,7 @@ const selectedRows = ref([])
                   icon="mdi-delete"
                 />
               </VBtn>
-            </td>
+            </td> -->
           </tr>
         </tbody>
         <tfoot v-show="!posts.length">

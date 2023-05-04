@@ -65,9 +65,9 @@ const banChannel = (id) => {
             <th scope="col">
               Автор
             </th>
-            <th scope="col" class="text-center">
+            <!-- <th scope="col" class="text-center">
               ДЕЙСТВИЯ
-            </th>
+            </th> -->
           </tr>
         </thead>
         <tbody>
@@ -92,7 +92,7 @@ const banChannel = (id) => {
                 Автор канала
               </RouterLink>
             </td>
-            <td
+            <!-- <td
               class="text-center"
               style="width: 5rem;"
             >
@@ -108,7 +108,7 @@ const banChannel = (id) => {
                   icon="mdi-delete"
                 />
               </VBtn>
-            </td>
+            </td> -->
           </tr>
         </tbody>
         <tfoot v-show="!channels.length">

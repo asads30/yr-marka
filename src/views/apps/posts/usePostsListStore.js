@@ -7,7 +7,7 @@ export const usePostsListStore = defineStore('PostsListStore', {
       return axiosIns.get('product/', {params})
     },
     fetchPostById(id) {
-      return axiosIns.get(`product/getProductsByPostId?postId=${id}`)
+      return axiosIns.get(`product/getProductById?productId=${id}`)
     }
   },
 })

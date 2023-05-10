@@ -1,8 +1,29 @@
 <script setup>
 import axiosIns from '@/plugins/axios';
+import ChartJsLineChart from '@/views/charts/chartjs/ChartJsLineChart.vue';
 const stats = ref([])
 const statsMonth = ref([])
-const statsThree = ref([])
+const stats1 = ref([])
+const chartJsCustomColors = {
+  white: '#fff',
+  yellow: '#ffe802',
+  primary: '#836af9',
+  areaChartBlue: '#2c9aff',
+  barChartYellow: '#ffcf5c',
+  polarChartGrey: '#4f5d70',
+  polarChartInfo: '#299aff',
+  lineChartYellow: '#d4e157',
+  polarChartGreen: '#28dac6',
+  lineChartPrimary: '#9e69fd',
+  lineChartWarning: '#ff9800',
+  horizontalBarInfo: '#26c6da',
+  polarChartWarning: '#ff8131',
+  scatterChartGreen: '#28c76f',
+  warningShade: '#ffbd1f',
+  areaChartBlueLight: '#84d0ff',
+  areaChartGreyLight: '#edf1f4',
+  scatterChartWarning: '#ff9f43',
+}
 Date.prototype.toISODateString = function () {
   return this.toISOString().substr(0,10);
 };
@@ -12,13 +33,13 @@ Date.prototype.toDateFromDays = function (n) {
   newDate.setDate(this.getDate() + n);
   return newDate;
 };
-var newDate = new Date();
-var week = newDate.toDateFromDays(-7).toISOString();
-var month = newDate.toDateFromDays(-30).toISOString();
-var monthThree = newDate.toDateFromDays(-60).toISOString();
+var fromMonth = new Date(new Date().setDate(1)).toISOString();
+var date1 = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString();
 var today = new Date().toISOString();
+var curr = new Date;
+var firstday = new Date(curr.setDate(curr.getDate() - curr.getDay()));
 const fetchStat = () => {
-  axiosIns.get(`analytics?types=users,payments,products,channels&dateFrom=${week}&dateTo=${today}`).then(res => {
+  axiosIns.get(`analytics?types=users,payments,products,channels&dateFrom=${firstday}&dateTo=${today}`).then(res => {
     let users = res.data.users;
     let channels = res.data.channels;
     let products = res.data.products;
@@ -49,7 +70,7 @@ const fetchStat = () => {
         subtitle: `В прошлой неделе добавилось ${Number(products.previousPeriodTotalCount).toFixed(0)}`
       },
       {
-        title: 'Товары',
+        title: 'Платежи',
         color: payments.priceChangePercent > 0 ? 'success' : 'error',
         icon: 'mdi-post',
         stats: `+${Number(payments.currentPeriodTotalPrice).toFixed(0)} ₽`,
@@ -59,7 +80,7 @@ const fetchStat = () => {
     ]
     stats.value = results;
   })
-  axiosIns.get(`analytics?types=users,payments,products,channels&dateFrom=${month}&dateTo=${today}`).then(res => {
+  axiosIns.get(`analytics?types=users,payments,products,channels&dateFrom=${fromMonth}&dateTo=${today}`).then(res => {
     let users = res.data.users;
     let channels = res.data.channels;
     let products = res.data.products;
@@ -90,7 +111,7 @@ const fetchStat = () => {
         subtitle: `В прошлой неделе добавилось ${Number(products.previousPeriodTotalCount).toFixed(0)}`
       },
       {
-        title: 'Товары',
+        title: 'Платежи',
         color: Number(payments.priceChangePercent) > 0 ? 'success' : 'error',
         icon: 'mdi-post',
         stats: `+${Number(payments.currentPeriodTotalPrice).toFixed(0)} ₽`,
@@ -99,47 +120,6 @@ const fetchStat = () => {
       }
     ]
     statsMonth.value = results;
-  })
-  axiosIns.get(`analytics?types=users,payments,products,channels&dateFrom=${monthThree}&dateTo=${today}`).then(res => {
-    let users = res.data.users;
-    let channels = res.data.channels;
-    let products = res.data.products;
-    let payments = res.data.payments;
-    let results = [
-      {
-        title: 'Пользователи',
-        color: users.percentChange > 0 ? 'success' : 'error',
-        icon: 'mdi-user',
-        stats: `+${Number(users.usersCount).toFixed(0)}`,
-        change: Number(users.percentChange).toFixed(0),
-        subtitle: `В прошлой неделе добавилось ${Number(users.previousPeriodUsersCount).toFixed(0)}`
-      },
-      {
-        title: 'Каналы',
-        color: channels.percentChange > 0 ? 'success' : 'error',
-        icon: 'mdi-list-box',
-        stats: `+${Number(channels.channelsCount).toFixed(0)}`,
-        change: Number(channels.percentChange).toFixed(0),
-        subtitle: `В прошлой неделе добавилось ${Number(channels.previousPeriodChannelsCount).toFixed(0)}`
-      },
-      {
-        title: 'Товары',
-        color: products.countChangePercent > 0 ? 'success' : 'error',
-        icon: 'mdi-post',
-        stats: `+${Number(products.currentPeriodTotalCount).toFixed(0)}`,
-        change: Number(products.countChangePercent).toFixed(0),
-        subtitle: `В прошлой неделе добавилось ${Number(products.previousPeriodTotalCount).toFixed(0)}`
-      },
-      {
-        title: 'Товары',
-        color: payments.priceChangePercent > 0 ? 'success' : 'error',
-        icon: 'mdi-post',
-        stats: `+${Number(payments.currentPeriodTotalPrice).toFixed(0)} ₽`,
-        change: Number(payments.priceChangePercent).toFixed(0),
-        subtitle: `В прошлой неделе добавилось ${Number(payments.previousPeriodTotalPrice).toFixed(0)} ₽`
-      }
-    ]
-    statsThree.value = results;
   })
 }
 watchEffect(fetchStat)
@@ -151,7 +131,7 @@ watchEffect(fetchStat)
       cols="12"
       md="12"
     >
-      <h2 class="mb-3">Статистика за неделю</h2>
+      <h2 class="mb-3">За текущую неделю</h2>
       <VRow>
         <VCol
           v-for="statistics in stats"
@@ -166,7 +146,7 @@ watchEffect(fetchStat)
       cols="12"
       md="12"
     >
-      <h2 class="mb-3">Статистика за месяц</h2>
+      <h2 class="mb-3">За текущий месяц</h2>
       <VRow>
         <VCol
           v-for="statistics in statsMonth"
@@ -177,20 +157,14 @@ watchEffect(fetchStat)
         </VCol>
       </VRow>
     </VCol>
-    <VCol
-      cols="12"
-      md="12"
-    >
-      <h2 class="mb-3">Статистика за 2 месяца</h2>
-      <VRow>
-        <VCol
-          v-for="statistics in statsThree"
-          :key="statistics.title"
-          cols="3"
-        >
-          <CardStatisticsVertical v-bind="statistics" />
-        </VCol>
-      </VRow>
+    <VCol cols="12">
+      <VCard
+        title="Общая статистика"
+      >
+        <VCardText>
+          <ChartJsLineChart :colors="chartJsCustomColors" />
+        </VCardText>
+      </VCard>
     </VCol>
   </VRow>
 </template>

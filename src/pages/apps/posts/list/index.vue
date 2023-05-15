@@ -13,7 +13,6 @@ const fetchPosts = () => {
     pageSize: rowPerPage.value,
     page: currentPage.value
   }).then(response => {
-    console.log(response.headers)
     posts.value = response.data.products
     totalPage.value = response.data.totalPageCount
     totalPosts.value = response.data.totalProductCount
@@ -57,17 +56,11 @@ const selectedRows = ref([])
               Стоимость
             </th>
             <th scope="col" class="text-center">
-              Канал
-            </th>
-            <th scope="col" class="text-center">
               Автор
             </th>
             <th scope="col" class="text-center">
               Статус
             </th>
-            <!-- <th scope="col" class="text-center">
-              ДЕЙСТВИЯ
-            </th> -->
           </tr>
         </thead>
         <tbody>
@@ -85,14 +78,6 @@ const selectedRows = ref([])
             </td>
             <td class="text-center" style="width: 12rem;">
               {{ post.price }} ₽
-            </td>
-            <td class="text-center" style="width: 12rem;">
-              <RouterLink
-                :to="{ name: 'apps-channels-view-id', params: { id: post.channel_id } }"
-                class="font-weight-medium user-list-name"
-              >
-                Канал товара
-              </RouterLink>
             </td>
             <td class="text-center" style="width: 12rem;">
               <RouterLink
@@ -116,22 +101,6 @@ const selectedRows = ref([])
                 v-else
               >Заблокирован</VChip>
             </td>
-            <!-- <td
-              class="text-center"
-              style="width: 5rem;"
-            >
-              <VBtn
-                variant="text"
-                color="default"
-                icon
-                size="small"
-              >
-                <VIcon
-                  size="24"
-                  icon="mdi-delete"
-                />
-              </VBtn>
-            </td> -->
           </tr>
         </tbody>
         <tfoot v-show="!posts.length">

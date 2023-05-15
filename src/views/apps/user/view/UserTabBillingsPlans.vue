@@ -19,31 +19,31 @@ const props = defineProps({
             <VCardText class="d-flex flex-sm-row flex-column">
               <div class="text-no-wrap">
                 <h4 class="text-base font-weight-medium mb-3">ИНН</h4>
-                <span class="text-body-1">{{ payouts.inn }}</span>
+                <span class="text-body-1">{{ payouts.y_user_secret.inn }}</span>
               </div>
             </VCardText>
             <VCardText class="d-flex flex-sm-row flex-column">
               <div class="text-no-wrap">
                 <h4 class="text-base font-weight-medium my-3">ФИО</h4>
-                <span class="text-body-1">{{ payouts.fio }}</span>
+                <span class="text-body-1">{{ payouts.y_user_secret.fio }}</span>
               </div>
             </VCardText>
             <VCardText class="d-flex flex-sm-row flex-column">
               <div class="text-no-wrap">
                 <h4 class="text-base font-weight-medium my-3">Номер счета</h4>
-                <span class="text-body-1">{{ payouts.bank_account_number }}</span>
+                <span class="text-body-1">{{ payouts.y_user_secret.bank_account_number }}</span>
               </div>
             </VCardText>
             <VCardText class="d-flex flex-sm-row flex-column">
               <div class="text-no-wrap">
                 <h4 class="text-base font-weight-medium my-3">BIC</h4>
-                <span class="text-body-1">{{ payouts.bic }}</span>
+                <span class="text-body-1">{{ payouts.y_user_secret.bic }}</span>
               </div>
             </VCardText>
             <VCardText class="d-flex flex-sm-row flex-column">
               <div class="text-no-wrap">
                 <h4 class="text-base font-weight-medium my-3">Номер корреспондента</h4>
-                <span class="text-body-1">{{ payouts.correspondent_account }}</span>
+                <span class="text-body-1">{{ payouts.y_user_secret.correspondent_account }}</span>
               </div>
             </VCardText>
           </VCard>

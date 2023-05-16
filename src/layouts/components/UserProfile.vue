@@ -1,13 +1,10 @@
 <script setup>
-import { useAppAbility } from '@/plugins/casl/useAppAbility';
 
 const router = useRouter()
-const ability = useAppAbility()
 const userData = JSON.parse(localStorage.getItem('userData') || 'null')
 
 const logout = () => {
   localStorage.removeItem('userData')
-  localStorage.removeItem('accessToken')
   router.replace({ path: '/login' })
 }
 

@@ -27,11 +27,16 @@ const telegramLoadedCallbackFunc = () => {
 const yourCallbackFunction = (user) => {
   if(user){
     const ability_data = [{action: 'manage', subject: 'all'}];
+    try {
+      localStorage.removeItem('userData');
+      localStorage.setItem('userAbilities', JSON.stringify(ability_data));
+      ability.update(ability_data)
+      localStorage.setItem('accessToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MX0.fhc3wykrAnRpcKApKhXiahxaOe8PSHatad31NuIZ0Zg')
+      localStorage.setItem('userRole', 'admin')
+    } catch (error) {
+      console.log(error)
+    }
     localStorage.setItem('userData', JSON.stringify(user));
-    localStorage.setItem('userAbilities', JSON.stringify(ability_data));
-    ability.update(ability_data)
-    localStorage.setItem('accessToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MX0.fhc3wykrAnRpcKApKhXiahxaOe8PSHatad31NuIZ0Zg')
-    localStorage.setItem('userRole', 'admin')
     router.push('/')
   }
   console.log(user)

@@ -11,13 +11,15 @@ const axiosIns = axios.create({
 })
 
 axiosIns.interceptors.response.use(undefined, (error) => {
-    if (error.response && error.response.status === 401) {
-        localStorage.removeItem('userData')
-        localStorage.removeItem('accessToken')
-        router.push('/login').then(() => {
-          localStorage.removeItem('userAbilities')
-          ability.update(initialAbility)
-        })
+    if (error.response.status === 401) {
+        try {
+            localStorage.removeItem('userData')
+            localStorage.removeItem('accessToken')
+            localStorage.removeItem('userAbilities')
+        } catch (error) {
+            console.log(error)
+        }
+        router.push('/login');
     }
     return Promise.reject(error.response.data);
 });

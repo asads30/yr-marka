@@ -1,5 +1,4 @@
 <script setup>
-import { initialAbility } from '@/plugins/casl/ability';
 import { useAppAbility } from '@/plugins/casl/useAppAbility';
 
 const router = useRouter()
@@ -9,10 +8,7 @@ const userData = JSON.parse(localStorage.getItem('userData') || 'null')
 const logout = () => {
   localStorage.removeItem('userData')
   localStorage.removeItem('accessToken')
-  router.push('/login').then(() => {
-    localStorage.removeItem('userAbilities')
-    ability.update(initialAbility)
-  })
+  router.replace({ path: '/login' })
 }
 
 const avatarBadgeProps = {

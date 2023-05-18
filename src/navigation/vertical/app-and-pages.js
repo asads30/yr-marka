@@ -33,4 +33,9 @@ export default [
     icon: { icon: 'mdi-cash' },
     to: 'apps-payouts-list',
   },
+  {
+    title: 'Verify',
+    icon: { icon: 'mdi-check-decagram' },
+    to: 'apps-verify-list',
+  },
 ]

@@ -29,7 +29,7 @@ export const useUserListStore = defineStore('UserListStore', {
     },
     fetchUserProductsById(id) {
       return new Promise((resolve, reject) => {
-        axiosIns.get(`product/getProductByUserId/?userId=${id}&page=1&pageSize=50`).then(response => resolve(response)).catch(error => reject(error))
+        axiosIns.get(`product/getProductByUserId?page=1&pageSize=50&userId=${id}`).then(response => resolve(response)).catch(error => reject(error))
       })
     },
     fetchUserPaymentsById(id) {

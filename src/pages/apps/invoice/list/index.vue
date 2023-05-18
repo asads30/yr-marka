@@ -67,9 +67,6 @@ const selectedRows = ref([])
             <th scope="col" class="text-center">
               ТОВАР
             </th>
-            <!-- <th scope="col" class="text-center">
-              ДЕЙСТВИЯ
-            </th> -->
           </tr>
         </thead>
         <tbody>
@@ -103,22 +100,6 @@ const selectedRows = ref([])
                 Товар платежа
               </RouterLink>
             </td>
-            <!-- <td
-              class="text-center"
-              style="width: 5rem;"
-            >
-              <VBtn
-                variant="text"
-                color="default"
-                icon
-                size="small"
-              >
-                <VIcon
-                  size="24"
-                  icon="mdi-check"
-                />
-              </VBtn>
-            </td> -->
           </tr>
         </tbody>
         <tfoot v-show="!invoices.length">

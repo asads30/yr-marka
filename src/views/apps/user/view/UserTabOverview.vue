@@ -28,17 +28,11 @@ const props = defineProps({
                 Стоимость
               </th>
               <th scope="col" class="text-center">
-                Канал
-              </th>
-              <th scope="col" class="text-center">
                 Автор
               </th>
               <th scope="col" class="text-center">
                 Статус
               </th>
-              <!-- <th scope="col" class="text-center">
-                ДЕЙСТВИЯ
-              </th> -->
             </tr>
           </thead>
           <tbody>
@@ -58,14 +52,6 @@ const props = defineProps({
                 {{ product.price }} ₽
               </td>
               <td class="text-center" style="width: 12rem;">
-                  <RouterLink
-                    :to="{ name: 'apps-channels-view-id', params: { id: product.channel_id } }"
-                    class="font-weight-medium user-list-name"
-                  >
-                    Канал товара
-                  </RouterLink>
-                </td>
-                <td class="text-center" style="width: 12rem;">
                 <RouterLink
                   :to="{ name: 'apps-user-view-id', params: { id: product.user_id } }"
                   class="font-weight-medium user-list-name"

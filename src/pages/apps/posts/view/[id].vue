@@ -23,14 +23,6 @@ postListStore.fetchPostById(Number(route.params.id)).then(response => {
           <div class="post-body mb-3" v-show="postData.comment_after_buy">
             <strong>После оплаты: </strong>{{ postData.comment_after_buy }}
           </div>
-          <div class="post-links mb-3">
-            <RouterLink
-              :to="{ name: 'apps-channels-view-id', params: { id: postData.channel_id } }"
-              class="font-weight-medium user-list-name"
-            >
-              Канал товара
-            </RouterLink>
-          </div>
           <div class="post-links">
             <RouterLink
               :to="{ name: 'apps-user-view-id', params: { id: postData.user_id } }"

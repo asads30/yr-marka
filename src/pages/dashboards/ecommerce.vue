@@ -1,5 +1,6 @@
 <script>
 import axiosIns from '@/plugins/axios';
+import CardStatisticsVertical from '@core/components/CardStatisticsVertical.vue';
 import { formatDate } from '@core/utils/formatters';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
@@ -22,7 +23,7 @@ import VueApexCharts from 'vue3-apexcharts';
           legend: {
             position: 'top',
             horizontalAlign: 'left',
-            labels: { colors: ['#e0cffe', '#b992fe'] },
+            labels: { colors: "'#e0cffe', '#b992fe'" },
             markers: {
               offsetY: 1,
               offsetX: -3,
@@ -100,12 +101,14 @@ import VueApexCharts from 'vue3-apexcharts';
             ],
           },
         ],
-        date: [new Date(), new Date()]
+        date: [new Date(), new Date()],
+        stats: []
       }
     },
     components: {
       VueApexCharts,
-      VueDatePicker
+      VueDatePicker,
+      CardStatisticsVertical
     },
     methods: {
       async handleDate(modelData){
@@ -157,6 +160,47 @@ import VueApexCharts from 'vue3-apexcharts';
         this.chartConfig = {
           labels: dates
         }
+        await axiosIns.get(`analytics?types=users,payments,products,channels&dateFrom=${start}&dateTo=${end}`).then(res => {
+          let users = res.data.users;
+          let channels = res.data.channels;
+          let products = res.data.products;
+          let payments = res.data.payments;
+          let results = [
+            {
+              title: 'Пользователи',
+              color: Number(users.percentChange) > 0 ? 'success' : 'error',
+              icon: 'mdi-user',
+              stats: `${Number(users.usersCount).toFixed(0)}`,
+              change: Number(users.percentChange).toFixed(2),
+              subtitle: `В прошлом периоде добавилось ${Number(users.previousPeriodUsersCount).toFixed(0)}`
+            },
+            {
+              title: 'Каналы',
+              color: Number(channels.percentChange) > 0 ? 'success' : 'error',
+              icon: 'mdi-list-box',
+              stats: `+${Number(channels.channelsCount).toFixed(0)}`,
+              change: Number(channels.percentChange).toFixed(2),
+              subtitle: `В прошлом периоде добавилось ${Number(channels.previousPeriodChannelsCount).toFixed(0)}`
+            },
+            {
+              title: 'Товары',
+              color: Number(products.countChangePercent) > 0 ? 'success' : 'error',
+              icon: 'mdi-post',
+              stats: `+${Number(products.currentPeriodTotalCount).toFixed(0)}`,
+              change: Number(products.countChangePercent).toFixed(2),
+              subtitle: `В прошлом периоде добавилось ${Number(products.previousPeriodTotalCount).toFixed(0)}`
+            },
+            {
+              title: 'Платежи',
+              color: Number(payments.priceChangePercent) > 0 ? 'success' : 'error',
+              icon: 'mdi-post',
+              stats: `+${Number(payments.currentPeriodTotalPrice).toFixed(0)} ₽`,
+              change: Number(payments.priceChangePercent).toFixed(2),
+              subtitle: `В прошлом периоде добавилось ${Number(payments.previousPeriodTotalPrice).toFixed(0)} ₽`
+            }
+          ]
+          this.stats = results;
+        })
       },
       async makeGetRequest() {
         const { data } = await axiosIns.get(`analytics/days?types=users,payments,products,channels&dateFrom=2023-05-16T00:00:00.000Z&dateTo=2023-05-18T00:00:00.000Z`)
@@ -199,6 +243,47 @@ import VueApexCharts from 'vue3-apexcharts';
           }
         ]
         this.series = seriesData
+        await axiosIns.get(`analytics?types=users,payments,products,channels&dateFrom=2023-05-16T00:00:00.000Z&dateTo=2023-05-18T00:00:00.000Z`).then(res => {
+          let users = res.data.users;
+          let channels = res.data.channels;
+          let products = res.data.products;
+          let payments = res.data.payments;
+          let results = [
+            {
+              title: 'Пользователи',
+              color: Number(users.percentChange) > 0 ? 'success' : 'error',
+              icon: 'mdi-user',
+              stats: `${Number(users.usersCount).toFixed(0)}`,
+              change: Number(users.percentChange).toFixed(2),
+              subtitle: `В прошлом периоде добавилось ${Number(users.previousPeriodUsersCount).toFixed(0)}`
+            },
+            {
+              title: 'Каналы',
+              color: Number(channels.percentChange) > 0 ? 'success' : 'error',
+              icon: 'mdi-list-box',
+              stats: `+${Number(channels.channelsCount).toFixed(0)}`,
+              change: Number(channels.percentChange).toFixed(2),
+              subtitle: `В прошлом периоде добавилось ${Number(channels.previousPeriodChannelsCount).toFixed(0)}`
+            },
+            {
+              title: 'Товары',
+              color: Number(products.countChangePercent) > 0 ? 'success' : 'error',
+              icon: 'mdi-post',
+              stats: `+${Number(products.currentPeriodTotalCount).toFixed(0)}`,
+              change: Number(products.countChangePercent).toFixed(2),
+              subtitle: `В прошлом периоде добавилось ${Number(products.previousPeriodTotalCount).toFixed(0)}`
+            },
+            {
+              title: 'Платежи',
+              color: Number(payments.priceChangePercent) > 0 ? 'success' : 'error',
+              icon: 'mdi-post',
+              stats: `+${Number(payments.currentPeriodTotalPrice).toFixed(0)} ₽`,
+              change: Number(payments.priceChangePercent).toFixed(2),
+              subtitle: `В прошлом периоде добавилось ${Number(payments.previousPeriodTotalPrice).toFixed(0)} ₽`
+            }
+          ]
+          this.stats = results;
+        })
       }
     },
     async mounted() {
@@ -227,6 +312,20 @@ import VueApexCharts from 'vue3-apexcharts';
           />
         </VCardText>
       </VCard>
+    </VCol>
+    <VCol
+      cols="12"
+      md="12"
+    >
+      <VRow>
+        <VCol
+          v-for="statistics in stats"
+          :key="statistics.title"
+          cols="3"
+        >
+          <CardStatisticsVertical v-bind="statistics" />
+        </VCol>
+      </VRow>
     </VCol>
   </VRow>
 </template>

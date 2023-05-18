@@ -1,262 +1,229 @@
-<script setup>
+<script>
 import axiosIns from '@/plugins/axios';
-import { getLineChartConfig } from '@core/libs/chartjs/chartjsConfig';
-import LineChart from '@core/libs/chartjs/components/LineChart';
-import { computed } from 'vue';
-import { useTheme } from 'vuetify';
-const statsMonth = ref([])
-const statsOldMonth = ref([])
-const vuetifyTheme = useTheme()
-Date.prototype.toISODateString = function () {
-  return this.toISOString().substr(0,10);
-};
-Date.prototype.toDateFromDays = function (n) {
-  n = parseInt(n) || 0;
-  var newDate = new Date(this.getTime());
-  newDate.setDate(this.getDate() + n);
-  return newDate;
-};
-var fromMonth = new Date(new Date().setDate(1)).toISOString();
-var today = new Date().toISOString();
-var current = new Date();
-var date1 = new Date(new Date().setDate(current.getDate() - 1)).toISOString();
-var date2 = new Date(new Date().setDate(current.getDate() - 2)).toISOString();
-var date3 = new Date(new Date().setDate(current.getDate() - 3)).toISOString();
-var date4 = new Date(new Date().setDate(current.getDate() - 4)).toISOString();
-var date5 = new Date(new Date().setDate(current.getDate() - 5)).toISOString();
-var date6 = new Date(new Date().setDate(current.getDate() - 6)).toISOString();
-var date7 = new Date(new Date().setDate(current.getDate() - 7)).toISOString();
-var oldMonth = new Date(current.getFullYear(), current.getMonth() - 1, 1);
-const fetchStat = () => {
-  axiosIns.get(`analytics?types=users,payments,products,channels&dateFrom=${fromMonth}&dateTo=${today}`).then(res => {
-    let users = res.data.users;
-    let channels = res.data.channels;
-    let products = res.data.products;
-    let payments = res.data.payments;
-    let results = [
-      {
-        title: 'Пользователи',
-        color: Number(users.percentChange) > 0 ? 'success' : 'error',
-        icon: 'mdi-user',
-        stats: `${Number(users.usersCount).toFixed(0)}`,
-        change: Number(users.percentChange).toFixed(2),
-        subtitle: `В прошлом месяце добавилось ${Number(users.previousPeriodUsersCount).toFixed(0)}`
-      },
-      {
-        title: 'Каналы',
-        color: Number(channels.percentChange) > 0 ? 'success' : 'error',
-        icon: 'mdi-list-box',
-        stats: `+${Number(channels.channelsCount).toFixed(0)}`,
-        change: Number(channels.percentChange).toFixed(2),
-        subtitle: `В прошлом месяце добавилось ${Number(channels.previousPeriodChannelsCount).toFixed(0)}`
-      },
-      {
-        title: 'Товары',
-        color: Number(products.countChangePercent) > 0 ? 'success' : 'error',
-        icon: 'mdi-post',
-        stats: `+${Number(products.currentPeriodTotalCount).toFixed(0)}`,
-        change: Number(products.countChangePercent).toFixed(2),
-        subtitle: `В прошлом месяце добавилось ${Number(products.previousPeriodTotalCount).toFixed(0)}`
-      },
-      {
-        title: 'Платежи',
-        color: Number(payments.priceChangePercent) > 0 ? 'success' : 'error',
-        icon: 'mdi-post',
-        stats: `+${Number(payments.currentPeriodTotalPrice).toFixed(0)} ₽`,
-        change: Number(payments.priceChangePercent).toFixed(2),
-        subtitle: `В прошлом месяце добавилось ${Number(payments.previousPeriodTotalPrice).toFixed(0)} ₽`
+import { formatDate } from '@core/utils/formatters';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
+import VueApexCharts from 'vue3-apexcharts';
+  export default {
+    name: "Ecommerce",
+    data() {
+      return {
+        chartConfig: {
+          chart: {
+            parentHeightOffset: 0,
+            toolbar: { show: false },
+          },
+          tooltip: { shared: false },
+          dataLabels: { enabled: false },
+          stroke: {
+            show: false,
+            curve: 'straight',
+          },
+          legend: {
+            position: 'top',
+            horizontalAlign: 'left',
+            labels: { colors: ['#e0cffe', '#b992fe'] },
+            markers: {
+              offsetY: 1,
+              offsetX: -3,
+            },
+            itemMargin: {
+              vertical: 3,
+              horizontal: 10,
+            },
+          },
+          colors: ['#e0cffe', '#8a8d93', '#ffb400', '#F4CA16'],
+          fill: {
+            opacity: 1,
+            type: 'solid',
+          },
+          grid: {
+            show: true,
+            borderColor: '#515059',
+            xaxis: {
+              lines: { show: true },
+            },
+          },
+          yaxis: {
+            labels: {
+              style: { colors: 'rgba(231, 227, 252, 0.6)' },
+            },
+          },
+          xaxis: {
+            axisBorder: { show: false },
+            axisTicks: { color: 'rgba(231, 227, 252)' },
+            crosshairs: {
+              stroke: { color: 'rgba(231, 227, 252)' },
+            },
+            labels: {
+              style: { colors: 'rgba(231, 227, 252, 0.6)' },
+            },
+            categories: [
+              '16/05',
+              '17/05',
+              '18/05',
+            ]
+          }
+        },
+        series: [
+          {
+            name: 'Платежи',
+            data: [
+              0,
+              1858,
+              2325,
+              0
+            ],
+          },
+          {
+            name: 'Пользователи',
+            data: [
+              100,
+              120,
+              90,
+            ],
+          },
+          {
+            name: 'Товары',
+            data: [
+              20,
+              40,
+              30
+            ],
+          },
+          {
+            name: 'Каналы',
+            data: [
+              60,
+              80,
+              70
+            ],
+          },
+        ],
+        date: [new Date(), new Date()]
       }
-    ]
-    statsMonth.value = results;
-  })
-  axiosIns.get(`analytics?types=users,payments,products,channels&dateFrom=${oldMonth}&dateTo=${fromMonth}`).then(res => {
-    let users = res.data.users;
-    let channels = res.data.channels;
-    let products = res.data.products;
-    let payments = res.data.payments;
-    let results = [
-      {
-        title: 'Пользователи',
-        color: Number(users.percentChange) > 0 ? 'success' : 'error',
-        icon: 'mdi-user',
-        stats: `${Number(users.usersCount).toFixed(0)}`,
-        change: Number(users.percentChange).toFixed(2),
-        subtitle: `В прошлом месяце добавилось ${Number(users.previousPeriodUsersCount).toFixed(0)}`
+    },
+    components: {
+      VueApexCharts,
+      VueDatePicker
+    },
+    methods: {
+      async handleDate(modelData){
+        let start = modelData[0].toISOString()
+        let end = modelData[1].toISOString()
+        const { data } = await axiosIns.get(`analytics/days?types=users,payments,products,channels&dateFrom=${start}&dateTo=${end}`)
+        let payments = [];
+        let users = [];
+        let channels = [];
+        let products = [];
+        let dates = [];
+        try {
+          data.users.forEach(user => {
+            users.push(user.data.usersCount)
+            let format = formatDate(user.date, { month: 'short', day: 'numeric' })
+            dates.push(format);
+          });
+          data.channels.forEach(user => {
+            channels.push(user.data.channelsCount)
+          });
+          data.products.forEach(user => {
+            products.push(user.data.currentPeriodTotalCount)
+          });
+          data.payments.forEach(payment => {
+            payments.push(payment.data.currentPeriodTotalPrice)
+          });
+        } catch (error) {
+          console.log(error)
+        }
+        let seriesData = [
+          {
+            name: 'Платежи',
+            data: payments
+          },
+          {
+            name: 'Пользователи',
+            data: users
+          },
+          {
+            name: 'Каналы',
+            data: channels
+          },
+          {
+            name: 'Товары',
+            data: products
+          }
+        ]
+        this.series = seriesData
+        this.chartConfig = {
+          labels: dates
+        }
       },
-      {
-        title: 'Каналы',
-        color: Number(channels.percentChange) > 0 ? 'success' : 'error',
-        icon: 'mdi-list-box',
-        stats: `+${Number(channels.channelsCount).toFixed(0)}`,
-        change: Number(channels.percentChange).toFixed(2),
-        subtitle: `В прошлом месяце добавилось ${Number(channels.previousPeriodChannelsCount).toFixed(0)}`
-      },
-      {
-        title: 'Товары',
-        color: Number(products.countChangePercent) > 0 ? 'success' : 'error',
-        icon: 'mdi-post',
-        stats: `+${Number(products.currentPeriodTotalCount).toFixed(0)}`,
-        change: Number(products.countChangePercent).toFixed(2),
-        subtitle: `В прошлом месяце добавилось ${Number(products.previousPeriodTotalCount).toFixed(0)}`
-      },
-      {
-        title: 'Платежи',
-        color: Number(payments.priceChangePercent) > 0 ? 'success' : 'error',
-        icon: 'mdi-post',
-        stats: `+${Number(payments.currentPeriodTotalPrice).toFixed(0)} ₽`,
-        change: Number(payments.priceChangePercent).toFixed(2),
-        subtitle: `В прошлом месяце добавилось ${Number(payments.previousPeriodTotalPrice).toFixed(0)} ₽`
+      async makeGetRequest() {
+        const { data } = await axiosIns.get(`analytics/days?types=users,payments,products,channels&dateFrom=2023-05-16T00:00:00.000Z&dateTo=2023-05-18T00:00:00.000Z`)
+        let payments = [];
+        let users = [];
+        let channels = [];
+        let products = [];
+        try {
+          data.payments.forEach(payment => {
+            payments.push(payment.data.currentPeriodTotalPrice)
+          });
+          data.users.forEach(user => {
+            users.push(user.data.usersCount)
+          });
+          data.channels.forEach(user => {
+            channels.push(user.data.channelsCount)
+          });
+          data.products.forEach(user => {
+            products.push(user.data.currentPeriodTotalCount)
+          });
+        } catch (error) {
+          console.log(error)
+        }
+        let seriesData = [
+          {
+            name: 'Платежи',
+            data: payments
+          },
+          {
+            name: 'Пользователи',
+            data: users
+          },
+          {
+            name: 'Каналы',
+            data: channels
+          },
+          {
+            name: 'Товары',
+            data: products
+          }
+        ]
+        this.series = seriesData
       }
-    ]
-    statsOldMonth.value = results;
-  })
-}
-const dataChart = computed(() => {
-  let statsUsers = [];
-  let statsChannels = [];
-  let statsProducts = [];
-  axiosIns.get(`analytics?types=users,payments,products,channels&dateFrom=${date1}&dateTo=${today}`).then(res => {
-    statsUsers.push(res.data.users.usersCount)
-    statsChannels.push(res.data.channels.channelsCount)
-    statsProducts.push(res.data.products.currentPeriodTotalCount)
-  })
-  axiosIns.get(`analytics?types=users,payments,products,channels&dateFrom=${date2}&dateTo=${today}`).then(res => {
-    statsUsers.push(res.data.users.usersCount)
-    statsChannels.push(res.data.channels.channelsCount)
-    statsProducts.push(res.data.products.currentPeriodTotalCount)
-  })
-  axiosIns.get(`analytics?types=users,payments,products,channels&dateFrom=${date3}&dateTo=${today}`).then(res => {
-    statsUsers.push(res.data.users.usersCount)
-    statsChannels.push(res.data.channels.channelsCount)
-    statsProducts.push(res.data.products.currentPeriodTotalCount)
-  })
-  axiosIns.get(`analytics?types=users,payments,products,channels&dateFrom=${date4}&dateTo=${today}`).then(res => {
-    statsUsers.push(res.data.users.usersCount)
-    statsChannels.push(res.data.channels.channelsCount)
-    statsProducts.push(res.data.products.currentPeriodTotalCount)
-  })
-  axiosIns.get(`analytics?types=users,payments,products,channels&dateFrom=${date5}&dateTo=${today}`).then(res => {
-    statsUsers.push(res.data.users.usersCount)
-    statsChannels.push(res.data.channels.channelsCount)
-    statsProducts.push(res.data.products.currentPeriodTotalCount)
-  })
-  axiosIns.get(`analytics?types=users,payments,products,channels&dateFrom=${date6}&dateTo=${today}`).then(res => {
-    statsUsers.push(res.data.users.usersCount)
-    statsChannels.push(res.data.channels.channelsCount)
-    statsProducts.push(res.data.products.currentPeriodTotalCount)
-  })
-  axiosIns.get(`analytics?types=users,payments,products,channels&dateFrom=${date7}&dateTo=${today}`).then(res => {
-    statsUsers.push(res.data.users.usersCount)
-    statsChannels.push(res.data.channels.channelsCount)
-    statsProducts.push(res.data.products.currentPeriodTotalCount)
-  })
-  return {
-    labels: [
-      '7 день',
-      '6 день',
-      '5 день',
-      '4 день',
-      '3 день',
-      '2 день',
-      '1 день'
-    ],
-    datasets: [
-      {
-        fill: true,
-        tension: 0.5,
-        pointRadius: 1,
-        label: 'Пользователи',
-        pointHoverRadius: 5,
-        pointStyle: 'circle',
-        borderColor: '#836af9',
-        backgroundColor: '#836af9',
-        pointHoverBorderWidth: 5,
-        pointHoverBorderColor: '#fff',
-        pointBorderColor: '#fff',
-        pointBorderWidth: 3,
-        pointHoverBackgroundColor: '#836af9',
-        data: statsUsers
-      },
-      {
-        fill: true,
-        tension: 0.5,
-        pointRadius: 1,
-        label: 'Каналы',
-        pointHoverRadius: 5,
-        pointStyle: 'circle',
-        borderColor: '#ffe802',
-        backgroundColor: '#ffe802',
-        pointHoverBorderWidth: 5,
-        pointHoverBorderColor: '#fff',
-        pointBorderColor: '#fff',
-        pointBorderWidth: 3,
-        pointHoverBackgroundColor: '#ffe802',
-        data: statsChannels
-      },
-      {
-        fill: true,
-        tension: 0.5,
-        pointRadius: 1,
-        label: 'Продукты',
-        pointHoverRadius: 5,
-        pointStyle: 'circle',
-        borderColor: '#28dac6',
-        backgroundColor: '#28dac6',
-        pointHoverBorderWidth: 5,
-        pointHoverBorderColor: '#fff',
-        pointBorderColor: '#fff',
-        pointBorderWidth: 3,
-        pointHoverBackgroundColor: '#28dac6',
-        data: statsProducts
-      }
-    ],
+    },
+    async mounted() {
+      await this.makeGetRequest()
+    }
   }
-})
-watchEffect(fetchStat)
-const chartConfig = computed(() => getLineChartConfig(vuetifyTheme.current.value))
 </script>
 
 <template>
   <VRow class="match-height">
-    <VCol
-      cols="12"
-      md="12"
-    >
-      <h2 class="mb-3">За текущий месяц</h2>
-      <VRow>
-        <VCol
-          v-for="statistics in statsMonth"
-          :key="statistics.title"
-          cols="3"
-        >
-          <CardStatisticsVertical v-bind="statistics" />
-        </VCol>
-      </VRow>
-    </VCol>
-    <VCol
-      cols="12"
-      md="12"
-    >
-      <h2 class="mb-3">За предудущий месяц</h2>
-      <VRow>
-        <VCol
-          v-for="statistics in statsOldMonth"
-          :key="statistics.title"
-          cols="3"
-        >
-          <CardStatisticsVertical v-bind="statistics" />
-        </VCol>
-      </VRow>
-    </VCol>
     <VCol cols="12">
-      <VCard
-        title="Общая статистика"
-      >
+      <VCard>
+        <VCardItem class="d-flex flex-wrap justify-space-between gap-4">
+          <VCardTitle>Общая статистика</VCardTitle>
+          <VCardSubtitle>По выбранному периоду</VCardSubtitle>
+        </VCardItem>
+        <div class="datapicker-c">
+          <VueDatePicker v-model="date" range multi-calendars @update:model-value="handleDate" format="MM/dd/yyyy" preview-format="MM/dd/yyyy" />
+        </div>
         <VCardText>
-          <LineChart
-            :height="300"
-            :chart-data="dataChart"
-            :chart-options="chartConfig"
+          <VueApexCharts
+            type="area"
+            height="400"
+            :options="chartConfig"
+            :series="series"
           />
         </VCardText>
       </VCard>
@@ -266,4 +233,9 @@ const chartConfig = computed(() => getLineChartConfig(vuetifyTheme.current.value
 
 <style lang="scss">
 @use "@core/scss/template/libs/apex-chart.scss";
+.datapicker-c{
+  position: absolute;
+  right: 30px;
+  top: 30px;
+}
 </style>

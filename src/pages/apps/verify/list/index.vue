@@ -25,10 +25,10 @@ const fetchPayouts = () => {
 
 const changeStatus = (userid) => {
   let data = {
-    status: 0
+    status: 1
   };
   axiosIns.patch(`verifyRequest/?userId=${userid}`, data).then(response => {
-    if(response.data == 'ok'){
+    if(response){
       watchEffect(fetchPayouts)
     }
   }).catch(error => {

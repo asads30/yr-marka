@@ -1,9 +1,10 @@
 <script setup>
+import axiosIns from '@/plugins/axios';
 import { usePayoutsListStore } from '@/views/apps/payouts/usePayoutsListStore';
 import { avatarText } from '@core/utils/formatters';
 
 const payoutsListStore = usePayoutsListStore()
-const rowPerPage = ref(10)
+const rowPerPage = ref(50)
 const currentPage = ref(1)
 const totalPage = ref(1)
 const totalPayouts = ref(0)
@@ -17,6 +18,19 @@ const fetchPayouts = () => {
     payouts.value = response.data.verifyRequests
     totalPage.value = 1
     totalPayouts.value = response.data.totalVerifyRequestsCount
+  }).catch(error => {
+    console.error(error)
+  })
+}
+
+const changeStatus = (userid) => {
+  let data = {
+    status: 0
+  };
+  axiosIns.patch(`verifyRequest/?userId=${userid}`, data).then(response => {
+    if(response.data == 'ok'){
+      watchEffect(fetchPayouts)
+    }
   }).catch(error => {
     console.error(error)
   })
@@ -59,6 +73,9 @@ const selectedRows = ref([])
             <th scope="col">
               СТАТУС
             </th>
+            <th scope="col" class="text-center">
+              ДЕЙСТВИЯ
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -93,13 +110,13 @@ const selectedRows = ref([])
                 </div>
             </td>
             <td>
-                <div class="d-flex flex-column pt-1 pb-1">
-                    <h6 class="text-sm font-weight-regular"><strong>ИНН: </strong>{{ payout.y_user_secret.inn }}</h6>
-                    <h6 class="text-sm font-weight-regular"><strong>ФИО: </strong>{{ payout.y_user_secret.fio }}</h6>
-                    <h6 class="text-sm font-weight-regular"><strong>Банк.номер: </strong>{{ payout.y_user_secret.bank_account_number }}</h6>
-                    <h6 class="text-sm font-weight-regular"><strong>BIC: </strong>{{ payout.y_user_secret.bic }}</h6>
-                    <h6 class="text-sm font-weight-regular"><strong>Корреспондент: </strong>{{ payout.y_user_secret.correspondent_account }}</h6>
-                </div>
+              <div class="d-flex flex-column pt-1 pb-1">
+                <h6 class="text-sm font-weight-regular"><strong>ИНН: </strong>{{ payout.y_user_secret.inn }}</h6>
+                <h6 class="text-sm font-weight-regular"><strong>ФИО: </strong>{{ payout.y_user_secret.fio }}</h6>
+                <h6 class="text-sm font-weight-regular"><strong>Банк.номер: </strong>{{ payout.y_user_secret.bank_account_number }}</h6>
+                <h6 class="text-sm font-weight-regular"><strong>BIC: </strong>{{ payout.y_user_secret.bic }}</h6>
+                <h6 class="text-sm font-weight-regular"><strong>Корреспондент: </strong>{{ payout.y_user_secret.correspondent_account }}</h6>
+              </div>
             </td>
             <td class="text-center" style="width: 8rem;">
               <VChip
@@ -109,11 +126,35 @@ const selectedRows = ref([])
                 v-if="payout.status == 1"
               >Подтверждено</VChip>
               <VChip
+                color="error"
+                size="small"
+                class="text-capitalize"
+                v-else-if="payout.status == 2"
+              >Отменен</VChip>
+              <VChip
                 color="warning"
                 size="small"
                 class="text-capitalize"
                 v-else
               >Ожидает</VChip>
+            </td>
+            <td
+              class="text-center"
+              style="width: 5rem;"
+            >
+              <VBtn
+                variant="text"
+                color="default"
+                icon
+                size="small"
+                @click="changeStatus(payout.User.id)"
+                v-if="payout.status == 0"
+              >
+                <VIcon
+                  size="24"
+                  icon="mdi-check"
+                />
+              </VBtn>
             </td>
           </tr>
         </tbody>

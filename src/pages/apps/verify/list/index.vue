@@ -11,10 +11,7 @@ const totalPayouts = ref(0)
 const payouts = ref([])
 
 const fetchPayouts = () => {
-  payoutsListStore.fetchVerify({
-    pageSize: rowPerPage.value,
-    page: currentPage.value
-  }).then(response => {
+  payoutsListStore.fetchVerify().then(response => {
     payouts.value = response.data.verifyRequests
     totalPage.value = 1
     totalPayouts.value = response.data.totalVerifyRequestsCount

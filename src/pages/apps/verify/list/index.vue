@@ -4,9 +4,9 @@ import { usePayoutsListStore } from '@/views/apps/payouts/usePayoutsListStore';
 import { avatarText } from '@core/utils/formatters';
 
 const payoutsListStore = usePayoutsListStore()
-const rowPerPage = ref(10)
+const rowPerPage = ref(50)
 const currentPage = ref(0)
-const totalPage = ref(0)
+const totalPage = ref(1)
 const totalPayouts = ref(0)
 const payouts = ref([])
 

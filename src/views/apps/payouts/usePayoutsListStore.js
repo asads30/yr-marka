@@ -3,11 +3,11 @@ import { defineStore } from 'pinia'
 
 export const usePayoutsListStore = defineStore('PayoutsListStore', {
   actions: {
-    fetchPayouts() { 
-      return axiosIns.get('paymentQuery/')
+    fetchPayouts(params) { 
+      return axiosIns.get('paymentQuery/', {params})
     },
-    fetchVerify() { 
-      return axiosIns.get('verifyRequest/')
+    fetchVerify(params) { 
+      return axiosIns.get('verifyRequest/', {params})
     }
   },
 })

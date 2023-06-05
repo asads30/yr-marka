@@ -4,14 +4,17 @@ import { usePayoutsListStore } from '@/views/apps/payouts/usePayoutsListStore';
 import { avatarText } from '@core/utils/formatters';
 
 const payoutsListStore = usePayoutsListStore()
-const rowPerPage = ref(50)
-const currentPage = ref(1)
-const totalPage = ref(1)
+const rowPerPage = ref(10)
+const currentPage = ref(0)
+const totalPage = ref(0)
 const totalPayouts = ref(0)
 const payouts = ref([])
 
 const fetchPayouts = () => {
-  payoutsListStore.fetchVerify().then(response => {
+  payoutsListStore.fetchVerify({
+    pageSize: rowPerPage.value,
+    page: currentPage.value
+  }).then(response => {
     payouts.value = response.data.verifyRequests
     totalPage.value = 1
     totalPayouts.value = response.data.totalVerifyRequestsCount

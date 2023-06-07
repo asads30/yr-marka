@@ -6,7 +6,7 @@ const axiosIns = axios.create({
     headers: { 
         'Authorization': localStorage.getItem('userData')
     },
-    responseType: 'arraybuffer'
+    responseType: 'json'
 })
 
 export default axiosIns

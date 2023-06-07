@@ -29,6 +29,7 @@ const yourCallbackFunction = (user) => {
     const ability_data = [{action: 'manage', subject: 'all'}];
     try {
       localStorage.removeItem('userData');
+      localStorage.removeItem('userSign');
       localStorage.setItem('userAbilities', JSON.stringify(ability_data));
       ability.update(ability_data)
       localStorage.setItem('accessToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MX0.fhc3wykrAnRpcKApKhXiahxaOe8PSHatad31NuIZ0Zg')
@@ -39,6 +40,7 @@ const yourCallbackFunction = (user) => {
     let userText = JSON.stringify(user);
     let userSet = window.btoa(unescape(encodeURIComponent(userText)))
     localStorage.setItem('userData', userSet);
+    localStorage.setItem('userSign', 'yes');
     router.push('/')
   }
   console.log(user)

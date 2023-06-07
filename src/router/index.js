@@ -10,8 +10,8 @@ const router = createRouter({
     {
       path: '/',
       redirect: to => {
-        const userData = localStorage.getItem('userData')
-        if (userData)
+        const userData = localStorage.getItem('userSign')
+        if (userData == 'yes')
           return { name: 'dashboards-ecommerce' }
         else
           return { name: 'login', query: to.query }

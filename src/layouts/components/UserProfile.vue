@@ -1,10 +1,10 @@
 <script setup>
 
 const router = useRouter()
-const userData = JSON.parse(localStorage.getItem('userData') || 'null')
 
 const logout = () => {
   localStorage.removeItem('userData')
+  localStorage.removeItem('userSign')
   router.replace({ path: '/login' })
 }
 
@@ -25,12 +25,7 @@ const avatarBadgeProps = {
       color="primary"
       variant="tonal"
     >
-      <VImg
-        v-if="userData && userData.avatar"
-        :src="userData.avatar"
-      />
       <VIcon
-        v-else
         icon="mdi-account-outline"
       />
       <VMenu

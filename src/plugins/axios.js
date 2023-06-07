@@ -4,11 +4,9 @@ const axiosIns = axios.create({
     baseURL: '/admin/',
     timeout: 5000,
     headers: { 
-        'Authorization': JSON.stringify(localStorage.getItem('userData')),
-        'Content-type': 'application/json',
+        'Authorization': localStorage.getItem('userData')
     },
-    responseType: 'json',
-    responseEncoding: 'utf8'
+    responseType: 'arraybuffer'
 })
 
 export default axiosIns

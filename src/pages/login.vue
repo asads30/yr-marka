@@ -37,12 +37,8 @@ const yourCallbackFunction = (user) => {
       console.log(error)
     }
     let userText = JSON.stringify(user);
-    let userSet = unescape(encodeURIComponent(userText))
+    let userSet = window.btoa(unescape(encodeURIComponent(userText)))
     localStorage.setItem('userData', userSet);
-    console.log(user);
-    console.log(user1 + '   0');
-    console.log(user2 + '   1');
-    console.log(utfstring + '   2');
     router.push('/')
   }
   console.log(user)

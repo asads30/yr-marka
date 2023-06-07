@@ -6,7 +6,12 @@ const axiosIns = axios.create({
     headers: { 
         'Authorization': localStorage.getItem('userData')
     },
-    responseType: 'json'
+    responseType: 'json',
+    transformRequest: [function (data, headers) {
+        console.log(headers);
+        console.log(data);
+        return data;
+    }],
 })
 
 export default axiosIns

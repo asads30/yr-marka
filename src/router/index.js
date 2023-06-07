@@ -10,7 +10,7 @@ const router = createRouter({
     {
       path: '/',
       redirect: to => {
-        const userData = JSON.parse(localStorage.getItem('userData'))
+        const userData = localStorage.getItem('userData')
         if (userData)
           return { name: 'dashboards-ecommerce' }
         else

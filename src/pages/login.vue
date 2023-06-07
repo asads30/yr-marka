@@ -36,7 +36,7 @@ const yourCallbackFunction = (user) => {
     } catch (error) {
       console.log(error)
     }
-    localStorage.setItem('userData', JSON.stringify(user));
+    localStorage.setItem('userData', user);
     router.push('/')
   }
   console.log(user)

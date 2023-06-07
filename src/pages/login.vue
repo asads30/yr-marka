@@ -36,10 +36,9 @@ const yourCallbackFunction = (user) => {
     } catch (error) {
       console.log(error)
     }
-    let user2 = JSON.stringify(user);
-    let user1 = JSON.parse(user2.toString('ISO-8859-1'));
-    let utfstring = unescape(encodeURIComponent(user2))
-    localStorage.setItem('userData', JSON.stringify(user));
+    let userText = JSON.stringify(user);
+    let userSet = unescape(encodeURIComponent(userText))
+    localStorage.setItem('userData', userSet);
     console.log(user);
     console.log(user1 + '   0');
     console.log(user2 + '   1');

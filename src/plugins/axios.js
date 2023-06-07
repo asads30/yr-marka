@@ -8,8 +8,10 @@ const axiosIns = axios.create({
         'Content-type': 'application/json',
     },
     responseType: 'json',
+    responseEncoding: 'utf8',
     transformRequest: [function (data, headers) {
-        
+        let val = localStorage.getItem('userData');
+        console.log(val);
         return data;
     }],
 })

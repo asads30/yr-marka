@@ -38,9 +38,12 @@ const yourCallbackFunction = (user) => {
     }
     let user2 = JSON.stringify(user);
     let user1 = JSON.parse(user2.toString('ISO-8859-1'));
+    let utfstring = unescape(encodeURIComponent(user2))
     localStorage.setItem('userData', JSON.stringify(user));
     console.log(user);
     console.log(user1 + '   0');
+    console.log(user2 + '   1');
+    console.log(utfstring + '   2');
     router.push('/')
   }
   console.log(user)

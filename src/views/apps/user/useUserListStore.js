@@ -14,6 +14,11 @@ export const useUserListStore = defineStore('UserListStore', {
         axiosIns.get(`user/getUserById/?userId=${id}`).then(response => resolve(response)).catch(error => reject(error))
       })
     },
+    fetchUserByUsername(params) {
+      return new Promise((resolve, reject) => {
+        axiosIns.get(`user/getUserByLikeUsername/?username=${params.username}&pageSize=${params.pageSize}&page=${params.page}`).then(response => resolve(response)).catch(error => reject(error))
+      })
+    },
     addUser(userData) {
       return new Promise((resolve, reject) => {
         axiosIns.post('/apps/users/user', {

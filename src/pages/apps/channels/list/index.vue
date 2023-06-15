@@ -1,6 +1,5 @@
 <script setup>
 import { useChannelsListStore } from '@/views/apps/channels/useChannelsListStore';
-import axiosIns from '@axios';
 
 const channelsListStore = useChannelsListStore()
 const rowPerPage = ref(50)
@@ -8,14 +7,15 @@ const currentPage = ref(1)
 const totalPage = ref(1)
 const totalChannels = ref(0)
 const channels = ref([])
-const statusBan = ref(false)
+const searchQuery = ref('')
 
 const fetchChannels = () => {
-  channelsListStore.fetchChannels({
+  channelsListStore.fetchChannelsByAddress({
+    address: (searchQuery.value) ? searchQuery.value : '',
     pageSize: rowPerPage.value,
-    page: currentPage.value
+    page: currentPage.value - 1
   }).then(response => {
-    channels.value = response.data.channels
+    channels.value = response.data.channel
     totalPage.value = response.data.totalPageCount
     totalChannels.value = response.data.totalChannelCount
   }).catch(error => {
@@ -30,43 +30,49 @@ watchEffect(() => {
     currentPage.value = totalPage.value
 })
 
+// 👉 watching current page
+watchEffect(() => {
+  if (currentPage.value > totalPage.value)
+    currentPage.value = totalPage.value
+})
+
 const paginationData = computed(() => {
   const firstIndex = channels.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
   const lastIndex = channels.value.length + (currentPage.value - 1) * rowPerPage.value
+  
   return `${ firstIndex }-${ lastIndex } из ${ totalChannels.value }`
 })
 
 const selectedRows = ref([])
+const selectAllChannels = ref(false)
 
-const banChannel = (id) => {
-  try {
-    axiosIns.post(`/channel/ban?channelId=${id}`).then(response => {
-      if(response.data.success == true){
-        fetchChannels()
-        statusBan.value = true
-      }
-    })
-  } catch (error) {
-    console.log(error)
-  }
-}
+watch(selectedRows, () => {
+  if (!selectedRows.value.length)
+  selectAllChannels.value = false
+}, { deep: true })
 </script>
 
 <template>
   <section>
 
     <VCard>
+      <VCardText>
+        <div class="invoice-list-search">
+            <VTextField
+              v-model="searchQuery"
+              placeholder="Поиск"
+              density="compact"
+            />
+          </div>
+      </VCardText>
       <VTable class="text-no-wrap">
         <thead>
           <tr>
             <th scope="col">
-              Название
+              КАНАЛ
             </th>
-            <th scope="col">
-              Адрес
-            </th>
-            <th scope="col">
-              Автор
+            <th scope="col" class="text-center" style="width: 10rem;">
+              АВТОР
             </th>
           </tr>
         </thead>
@@ -77,11 +83,9 @@ const banChannel = (id) => {
           >
             <td>
               <div class="d-flex flex-column">
-                {{ channel.name }}
-              </div>
-            </td>
-            <td>
-              <div class="d-flex flex-column">
+                <h6 class="text-sm font-weight-medium">
+                  {{ channel.name }}
+                </h6>
                 <a
                   :href="'https://t.me/' + channel.address"
                   target="blank"
@@ -89,13 +93,14 @@ const banChannel = (id) => {
                 >{{ channel.address }}</a>
               </div>
             </td>
-            <td style="width: 15rem;">
-              <RouterLink
-                :to="{ name: 'apps-user-view-id', params: { id: channel.user_id } }"
-                class="font-weight-medium user-list-name"
-              >
-                Автор канала
-              </RouterLink>
+            <td class="text-center" style="width: 10rem;">
+              <div class="d-flex align-center text-center justify-center">
+                <RouterLink
+                  :to="{ name: 'apps-user-view-id', params: { id: channel.user_id } }"
+                >
+                  Автор канала
+                </RouterLink>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -140,12 +145,6 @@ const banChannel = (id) => {
         </div>
       </VCardText>
     </VCard>
-    <VSnackbar
-      v-model="statusBan"
-      location="top end"
-    >
-      Канал удален
-    </VSnackbar>
   </section>
 </template>
 

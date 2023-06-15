@@ -11,7 +11,7 @@ const posts = ref([])
 const fetchPosts = () => {
   postsListStore.fetchPosts({
     pageSize: rowPerPage.value,
-    page: currentPage.value
+    page: currentPage.value - 1
   }).then(response => {
     posts.value = response.data.products
     totalPage.value = response.data.totalPageCount
@@ -70,7 +70,7 @@ const selectedRows = ref([])
           >
             <td class="post-list-name">
               <RouterLink
-                :to="{ name: 'apps-posts-view-id', params: { id: post.post_id } }"
+                :to="{ name: 'apps-posts-view-id', params: { id: post.id } }"
                 class="font-weight-medium user-list-name"
               >
                 {{ post.name }}

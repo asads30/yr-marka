@@ -12,7 +12,7 @@ const payouts = ref([])
 const fetchPayouts = () => {
   payoutsListStore.fetchPayouts({
     pageSize: rowPerPage.value,
-    page: currentPage.value
+    page: currentPage.value - 1
   }).then(response => {
     payouts.value = response.data.paymentQueries
     totalPage.value = response.data.totalPageCount

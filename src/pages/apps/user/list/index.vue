@@ -9,11 +9,13 @@ const currentPage = ref(1)
 const totalPage = ref(1)
 const totalUsers = ref(0)
 const users = ref([])
+const searchQuery = ref('')
 
 const fetchUsers = () => {
-  userListStore.fetchUsers({
+  userListStore.fetchUserByUsername({
+    username: (searchQuery.value) ? searchQuery.value : '',
     pageSize: rowPerPage.value,
-    page: currentPage.value
+    page: currentPage.value - 1
   }).then(response => {
     users.value = response.data.users
     totalPage.value = response.data.totalPageCount
@@ -62,6 +64,15 @@ const blockUser = (username) => {
   <section>
 
     <VCard>
+      <VCardText>
+        <div class="invoice-list-search">
+            <VTextField
+              v-model="searchQuery"
+              placeholder="Поиск"
+              density="compact"
+            />
+          </div>
+      </VCardText>
       <VTable class="text-no-wrap">
         <thead>
           <tr>

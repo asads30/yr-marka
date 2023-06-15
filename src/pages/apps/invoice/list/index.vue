@@ -11,7 +11,7 @@ const invoices = ref([])
 const fetchInvoice = () => {
   invoiceListStore.fetchInvoice({
     pageSize: rowPerPage.value,
-    page: currentPage.value
+    page: currentPage.value - 1
   }).then(response => {
     invoices.value = response.data.payments
     totalPage.value = response.data.totalPageCount
@@ -52,10 +52,16 @@ const selectedRows = ref([])
             <th scope="col">
               ID
             </th>
-            <th scope="col">
+            <th scope="col" class="text-center">
               СУММА
             </th>
-            <th scope="col">
+            <th scope="col" class="text-center">
+              АГЕНТСКАЯ КОМИССИЯ
+            </th>
+            <th scope="col" class="text-center">
+              ДОХОД КЛИЕНТА
+            </th>
+            <th scope="col" class="text-center">
               ДАТА ПЛАТЕЖА
             </th>
             <th scope="col" class="text-center">
@@ -77,10 +83,22 @@ const selectedRows = ref([])
             <td>
               №{{ invoice.id }}
             </td>
-            <td style="width: 10rem;">
-              {{ invoice.price }} ₽
+            <td style="width: 10rem;" class="text-center">
+              <strong>{{ invoice.price }} ₽</strong>
+              <div class="check" v-if="invoice.general_receipt_url">
+                <a :href="invoice.general_receipt_url" target="_blank">основной чек</a>
+              </div>
             </td>
-            <td style="width: 10rem;">
+            <td style="width: 10rem;" class="text-center">
+              <strong v-if="invoice.agent_commission">{{ invoice.agent_commission }} ₽</strong> 
+              <div class="check" v-if="invoice.agent_receipt_url">
+                <a :href="invoice.agent_receipt_url" target="_blank">основной чек</a>
+              </div>
+            </td>
+            <td style="width: 10rem;" class="text-center">
+              <strong v-if="invoice.user_received">{{ invoice.user_received }} ₽</strong>
+            </td>
+            <td style="width: 10rem;" class="text-center">
               {{ formatDate(invoice.createdAt, { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' }) }}
             </td>
             <td class="text-center" style="width: 10rem;">

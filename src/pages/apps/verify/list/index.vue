@@ -4,8 +4,8 @@ import { usePayoutsListStore } from '@/views/apps/payouts/usePayoutsListStore';
 import { avatarText } from '@core/utils/formatters';
 
 const payoutsListStore = usePayoutsListStore()
-const rowPerPage = ref(50)
-const currentPage = ref(0)
+const rowPerPage = ref(30)
+const currentPage = ref(1)
 const totalPage = ref(1)
 const totalPayouts = ref(0)
 const payouts = ref([])
@@ -13,7 +13,7 @@ const payouts = ref([])
 const fetchPayouts = () => {
   payoutsListStore.fetchVerify({
     pageSize: rowPerPage.value,
-    page: currentPage.value
+    page: currentPage.value - 1
   }).then(response => {
     payouts.value = response.data.verifyRequests
     totalPage.value = 1
@@ -43,6 +43,7 @@ watchEffect(() => {
     currentPage.value = totalPage.value
 })
 
+// 👉 watching current page
 watchEffect(() => {
   if (currentPage.value > totalPage.value)
     currentPage.value = totalPage.value
@@ -51,10 +52,17 @@ watchEffect(() => {
 const paginationData = computed(() => {
   const firstIndex = payouts.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
   const lastIndex = payouts.value.length + (currentPage.value - 1) * rowPerPage.value
+  
   return `${ firstIndex }-${ lastIndex } из ${ totalPayouts.value }`
 })
 
 const selectedRows = ref([])
+const selectAllPayouts = ref(false)
+
+watch(selectedRows, () => {
+  if (!selectedRows.value.length)
+  selectAllPayouts.value = false
+}, { deep: true })
 </script>
 
 <template>
@@ -181,7 +189,7 @@ const selectedRows = ref([])
             density="compact"
             variant="plain"
             class="user-pagination-select"
-            :items="[50, 100, 200, 500]"
+            :items="[10, 20, 50, 100]"
           />
         </div>
         <div class="d-flex align-center">

@@ -327,6 +327,18 @@ import VueApexCharts from 'vue3-apexcharts';
         </VCol>
       </VRow>
     </VCol>
+    <VCol
+      cols="12"
+      md="12"
+    >
+      <h2 style="margin-bottom: 20px;">Экспорт платежей в Excel</h2>
+      <div class="export">
+        <a href="http://wpaka.site/admin/payment/export/2023/3" target="_blank" class="v-btn v-theme--dark bg-primary btn-export">Март</a>
+        <a href="http://wpaka.site/admin/payment/export/2023/4" target="_blank" class="v-btn v-theme--dark bg-primary btn-export">Апрель</a>
+        <a href="http://wpaka.site/admin/payment/export/2023/5" target="_blank" class="v-btn v-theme--dark bg-primary btn-export">Май</a>
+        <a href="http://wpaka.site/admin/payment/export/2023/6" target="_blank" class="v-btn v-theme--dark bg-primary btn-export">Июнь</a>
+      </div>
+    </VCol>
   </VRow>
 </template>
 
@@ -336,5 +348,12 @@ import VueApexCharts from 'vue3-apexcharts';
   position: absolute;
   right: 30px;
   top: 30px;
+}
+.export{
+  display: flex;
+  gap: 20px;
+}
+.btn-export{
+  padding: 10px 25px;
 }
 </style>

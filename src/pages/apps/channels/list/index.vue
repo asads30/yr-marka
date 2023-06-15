@@ -63,6 +63,9 @@ const banChannel = (id) => {
               Название
             </th>
             <th scope="col">
+              Адрес
+            </th>
+            <th scope="col">
               Автор
             </th>
           </tr>
@@ -72,6 +75,11 @@ const banChannel = (id) => {
             v-for="channel in channels"
             :key="channel.id"
           >
+            <td>
+              <div class="d-flex flex-column">
+                {{ channel.name }}
+              </div>
+            </td>
             <td>
               <div class="d-flex flex-column">
                 <a

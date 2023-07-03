@@ -140,6 +140,12 @@ watch(selectedRows, () => {
                 v-else-if="payout.status == 2"
               >Отменен</VChip>
               <VChip
+                color="error"
+                size="small"
+                class="text-capitalize"
+                v-else-if="payout.status == 3"
+              >Требует ручной проверки</VChip>
+              <VChip
                 color="warning"
                 size="small"
                 class="text-capitalize"
@@ -156,7 +162,7 @@ watch(selectedRows, () => {
                 icon
                 size="small"
                 @click="changeStatus(payout.User.id)"
-                v-if="payout.status == 0"
+                v-if="payout.status == 3"
               >
                 <VIcon
                   size="24"

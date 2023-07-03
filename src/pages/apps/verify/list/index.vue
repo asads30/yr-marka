@@ -162,7 +162,7 @@ watch(selectedRows, () => {
                 icon
                 size="small"
                 @click="changeStatus(payout.User.id)"
-                v-if="payout.status == 3"
+                v-if="payout.status == 3 || payout.status == 0"
               >
                 <VIcon
                   size="24"

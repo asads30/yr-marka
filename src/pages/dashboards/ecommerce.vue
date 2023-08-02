@@ -337,6 +337,8 @@ import VueApexCharts from 'vue3-apexcharts';
         <a href="http://wpaka.site/admin/payment/export/2023/4" target="_blank" class="v-btn v-theme--dark bg-primary btn-export">Апрель</a>
         <a href="http://wpaka.site/admin/payment/export/2023/5" target="_blank" class="v-btn v-theme--dark bg-primary btn-export">Май</a>
         <a href="http://wpaka.site/admin/payment/export/2023/6" target="_blank" class="v-btn v-theme--dark bg-primary btn-export">Июнь</a>
+        <a href="http://wpaka.site/admin/payment/export/2023/7" target="_blank" class="v-btn v-theme--dark bg-primary btn-export">Июль</a>
+        <a href="http://wpaka.site/admin/payment/export/2023/8" target="_blank" class="v-btn v-theme--dark bg-primary btn-export">Август</a>
       </div>
     </VCol>
   </VRow>

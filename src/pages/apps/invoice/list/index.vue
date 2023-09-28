@@ -13,9 +13,9 @@ const fetchInvoice = () => {
     pageSize: rowPerPage.value,
     page: currentPage.value - 1
   }).then(response => {
-    invoices.value = response.data.payments
+    invoices.value = response.data.items
     totalPage.value = response.data.totalPageCount
-    totalInvoices.value = response.data.totalPaymentsCount
+    totalInvoices.value = response.data.totalCount
   }).catch(error => {
     console.error(error)
   })

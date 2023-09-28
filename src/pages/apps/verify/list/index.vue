@@ -16,7 +16,7 @@ const fetchPayouts = () => {
     page: currentPage.value - 1
   }).then(response => {
     payouts.value = response.data.verifyRequests
-    totalPage.value = 1
+    totalPage.value = response.data.totalPageCount
     totalPayouts.value = response.data.totalVerifyRequestsCount
   }).catch(error => {
     console.error(error)

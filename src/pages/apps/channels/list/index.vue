@@ -15,9 +15,9 @@ const fetchChannels = () => {
     pageSize: rowPerPage.value,
     page: currentPage.value - 1
   }).then(response => {
-    channels.value = response.data.channel
+    channels.value = response.data.channels
     totalPage.value = response.data.totalPageCount
-    totalChannels.value = response.data.totalChannelCount
+    totalChannels.value = response.data.totalChannelsCount
   }).catch(error => {
     console.error(error)
   })
